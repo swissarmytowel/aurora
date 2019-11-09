@@ -1,4 +1,10 @@
-let PlayerMixin = {
+export default class Player extends Phaser.Physics.Arcade.Sprite{
+    constructor(scene, x, y, name, frame) {
+        super(scene, x, y, name, frame);
+        scene.physics.world.enable(this);
+        scene.add.existing(this);
+    }
+
     update() {
         const body = this.body;
         this.body.setVelocity(0);
@@ -20,7 +26,7 @@ let PlayerMixin = {
         // Normalize and scale the velocity so that player can't move faster along a diagonal
         body.velocity.normalize().scale(speed);
         this.updateAnimation();
-    },
+    };
     updateAnimation() {
         const animations = this.animationSets.get('Walk');
         const animsController = this.anims;
@@ -46,6 +52,5 @@ let PlayerMixin = {
                 this.setTexture(frame.textureKey, frame.textureFrame);
             }
         }
-    },
-};
-export {PlayerMixin};
+    }
+}
