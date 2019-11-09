@@ -1,6 +1,6 @@
 import {StateTableRow, StateTable} from '../ai/behaviour/state';
-import {SlimeMixin} from "./slime_mixin";
-import {PlayerMixin} from "./player_mixin";
+import Slime from "./slime";
+import Player from "./player";
 import cyberpunkConfigJson from "../../assets/animations/cyberpunk.json";
 import slimeConfigJson from "../../assets/animations/slime.json";
 import AnimationLoader from "../utils/animation-loader";
@@ -51,11 +51,10 @@ export default class CharacterFactory {
     }
 
     buildPlayerCharacter(spriteSheetName, x, y) {
-        let character = this.scene.physics.add.sprite(x, y, spriteSheetName, 2);
+        let character = new Player(this.scene, x, y, spriteSheetName, 2);
         character.maxSpeed = 100;
         character.setCollideWorldBounds(true);
         character.cursors = this.scene.input.keyboard.createCursorKeys();
-        Object.assign(character, PlayerMixin);
         character.animationSets = this.animationLibrary.get('aurora');
         //todo: not here
       character.footstepsMusic = this.scene.sound.add('footsteps', {
@@ -81,8 +80,7 @@ export default class CharacterFactory {
 
     buildSlime(x, y, params) {
         const slimeType = params.slimeType || 1;
-        let slime = this.scene.physics.add.sprite(x, y, this.slimeSpriteSheet, 9 * slimeType);
-        Object.assign(slime, SlimeMixin);
+        let slime = new Slime(this.scene, x, y, this.slimeSpriteSheet, 9 * slimeType);
         slime.animations = this.animationLibrary.get(this.slimeSpriteSheet).get(this.slimeNumberToName(slimeType));
         slime.setCollideWorldBounds(true);
         slime.speed = 40;
