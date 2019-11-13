@@ -7,6 +7,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite{
         this.setCollideWorldBounds(true);
 
         this.behaviuors = [];
+        this.steerings = [];
         this.hp = 100;
         this.radius = 100;
         this.groupId = 0;

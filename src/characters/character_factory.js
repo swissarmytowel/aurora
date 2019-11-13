@@ -14,9 +14,9 @@ export default class CharacterFactory {
         this.cyberSpritesheets =  ['aurora', 'blue', 'yellow', 'green', 'punk'];
         this.slimeSpriteSheet = 'slime';
 
-        const slimeStateTable = new StateTable(this);
-        slimeStateTable.addState(new StateTableRow('searching', this.foundTarget, 'jumping'));
-        slimeStateTable.addState(new StateTableRow('jumping', this.lostTarget, 'searching'));
+        // const slimeStateTable = new StateTable(this);
+        // slimeStateTable.addState(new StateTableRow('searching', this.foundTarget, 'jumping'));
+        // slimeStateTable.addState(new StateTableRow('jumping', this.lostTarget, 'searching'));
 
         let animationLibrary =  new Map();
         this.cyberSpritesheets.forEach(
@@ -49,10 +49,12 @@ export default class CharacterFactory {
     }
 
     buildPlayerCharacter(spriteSheetName, x, y) {
+
         let character = new Human(this.scene, x, y, spriteSheetName, 2);
 
-        character.animationSets = this.animationLibrary.get('aurora');
+        character.animationSets = this.animationLibrary.get(spriteSheetName);
         character.addBehaviour(new UserControlled(100, this.scene.input.keyboard.createCursorKeys()));
+
         //todo: not here
       character.footstepsMusic = this.scene.sound.add('footsteps', {
           mute: false,
@@ -70,17 +72,19 @@ export default class CharacterFactory {
     }
 
     buildCyberpunkCharacter(spriteSheetName, x, y, params) {
-        return this.scene.physics.add.sprite(x, y, spriteSheetName, 2);
-
-        //todo: add
-    }
+        let human = new Human(this.scene, x, y, spriteSheetName, 2);
+        human.setCollideWorldBounds(true);
+        human.animationSets = this.animationLibrary.get(spriteSheetName);
+        human.speed = 40;
+        return human;
+    }   
 
     buildSlime(x, y, params) {
         const slimeType = params.slimeType || 1;
         let slime = new Slime(this.scene, x, y, this.slimeSpriteSheet, 9 * slimeType);
         slime.animations = this.animationLibrary.get(this.slimeSpriteSheet).get(this.slimeNumberToName(slimeType));
         slime.setCollideWorldBounds(true);
-        slime.speed = 40;
+        slime.speed = 20;
         return slime;
     }
     slimeNumberToName(n)

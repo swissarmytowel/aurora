@@ -1,8 +1,7 @@
 import Phaser from 'phaser'
 
 import StartingScene from '../scenes/starting-scene';
-
-//https://github.com/mikewesthad/phaser-3-tilemap-blog-posts/blob/master/examples/post-1/05-physics/index.js
+import SteeringWanderScene from '../scenes/steering-wander-scene';
 
 const config = {
   type: Phaser.AUTO,
@@ -10,7 +9,9 @@ const config = {
   height: 600,
   pixelArt: true,
   zoom: 1.2,
-  scene: StartingScene,
+  scene: 
+  SteeringWanderScene,
+  //StartingScene,
   physics: {
     default: "arcade",
     arcade: {
