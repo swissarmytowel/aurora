@@ -1,17 +1,14 @@
-let CharacterMixin = {
-    setStateTable(stateTable) {
-       this.stateTable = stateTable;
-    },
-    setDecisionMaker(decisionMaker)
-    {
-        this.decisionMaker = decisionMaker;
-    },
-    update()
-    {
-       const state =  this.stateTable.getNextState();
-       decisionMaker.perform(state);
-       this.updateAnimation();
+export default class Character extends Phaser.Physics.Arcade.Sprite{
+    constructor(scene, x, y, name, frame) {
+        super(scene, x, y, name, frame);
+        scene.physics.world.enable(this);
+        scene.add.existing(this);
     }
-};
 
-export {CharacterMixin};
+    update() {
+      this.updateAnimation();
+    };
+    updateAnimation() {
+
+    };
+}
