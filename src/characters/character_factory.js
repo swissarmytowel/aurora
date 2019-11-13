@@ -6,10 +6,7 @@ import slimeConfigJson from "../../assets/animations/slime.json";
 import AnimationLoader from "../utils/animation-loader";
 import Human from './human';
 
-
 export default class CharacterFactory {
-
-
 
     constructor(scene) {
         this.scene = scene;

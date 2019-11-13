@@ -1,11 +1,7 @@
+import Character from "./character";
 import Vector2 from 'phaser/src/math/Vector2'
 const eps = 20;
-export default class Slime extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene, x, y, name, frame) {
-        super(scene, x, y, name, frame);
-        scene.physics.world.enable(this);
-        scene.add.existing(this);
-    }
+export default class Slime extends Character{
     update() {
         if (this.hasArrived())
         {
