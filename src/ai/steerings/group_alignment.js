@@ -1,7 +1,7 @@
 import Vector2 from 'phaser/src/math/Vector2'
 import Steering from './steering';
 
-export default class GroupAligment extends Steering {
+export default class GroupAlignment extends Steering {
     constructor (owner, objects, force = 1) {
         super(owner, objects, force);
         this.owner = owner;
@@ -21,8 +21,7 @@ export default class GroupAligment extends Steering {
         if (this.objects.length > 0) {
             dir = dir.scale(1/this.objects.length)
         }
-
-        console.log(dir)
+        
         return dir;
     }
 

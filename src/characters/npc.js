@@ -8,7 +8,7 @@ export default class Npc extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        const dir = this.steerings.groupAligment.calculateImpulse();
+        const dir = this.steerings.groupAlignment.calculateImpulse();
         this.body.setVelocityX(dir.x)
         this.body.setVelocityY(dir.y)
 

@@ -10,9 +10,9 @@ import greenSpriteSheet from '../assets/sprites/characters/green.png'
 import slimeSpriteSheet from '../assets/sprites/characters/slime.png'
 import CharacterFactory from "../src/characters/character_factory";
 import Footsteps from "../assets/audio/footstep_ice_crunchy_run_01.wav";
-import GroupAligment from "../src/ai/steerings/group_aligment";
+import GroupAlignment from "../src/ai/steerings/group_alignment";
 
-let GroupAligmentScene = new Phaser.Class({
+let GroupAlignmentScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
     characterFrameConfig: {frameWidth: 31, frameHeight: 31},
@@ -97,7 +97,7 @@ let GroupAligmentScene = new Phaser.Class({
             
             const neighbor = characters.filter(o => o !== c);
             neighbor.push(this.player);
-            c.steerings.groupAligment = new GroupAligment(c, neighbor);
+            c.steerings.groupAlignment = new GroupAlignment(c, neighbor);
         });
 
         this.physics.add.collider(Object.values(this.characters));
@@ -141,4 +141,4 @@ let GroupAligmentScene = new Phaser.Class({
     }
 });
 
-export default GroupAligmentScene
+export default GroupAlignmentScene
