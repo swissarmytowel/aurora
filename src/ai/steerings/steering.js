@@ -11,4 +11,11 @@ export default class Steering {
         return new Vector2(0, 0);
     }
 
+    static calculateSteeringsSum(object) {
+        return object.steerings? object.steerings.reduce( 
+                    (sum, steering) => sum.add(steering.calculateImpulse()
+                        .scale(steering.force)),
+                    new Vector2(0, 0)) : 
+            new Vector2(0, 0);
+    }
 }
