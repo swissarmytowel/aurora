@@ -5,7 +5,7 @@ import cyberpunkConfigJson from "../../assets/animations/cyberpunk.json";
 import slimeConfigJson from "../../assets/animations/slime.json";
 import AnimationLoader from "../utils/animation-loader";
 import UserControlled from '../ai/behaviour/user_controlled'
-
+import SteeringDriven from '../ai/behaviour/steering_driven'
 export default class CharacterFactory {
 
     constructor(scene) {
@@ -51,12 +51,10 @@ export default class CharacterFactory {
     buildPlayerCharacter(spriteSheetName, x, y) {
 
         let character = new Human(this.scene, x, y, spriteSheetName, 2);
-
         character.animationSets = this.animationLibrary.get(spriteSheetName);
         character.addBehaviour(new UserControlled(100, this.scene.input.keyboard.createCursorKeys()));
-
         //todo: not here
-      character.footstepsMusic = this.scene.sound.add('footsteps', {
+        character.footstepsMusic = this.scene.sound.add('footsteps', {
           mute: false,
           volume: 1,
           rate: 1,
@@ -79,6 +77,12 @@ export default class CharacterFactory {
         return human;
     }   
 
+    buildSteeringDrivenHuman(spriteSheetName, x, y, steerings)
+    {
+        let human = this.buildCyberpunkCharacter(spriteSheetName, x, y, {});
+        human.addBehaviour(new SteeringDriven(steerings));
+        return human;
+    }
     buildSlime(x, y, params) {
         const slimeType = params.slimeType || 1;
         let slime = new Slime(this.scene, x, y, this.slimeSpriteSheet, 9 * slimeType);

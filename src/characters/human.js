@@ -8,18 +8,22 @@ export default class Human extends Character{
         this.behaviuors.push(behaviour);
     }
     update() {
-            this.behaviuors.forEach(x=>x.update());
-            this.updateAnimation();
+        this.behaviuors.forEach(x=>x.update());
+        this.updateAnimation();
     };
     updateAnimation() {
         const animations = this.animationSets.get('Walk');
         const animsController = this.anims;
         const x = this.body.velocity.x;
         const y = this.body.velocity.y;
-        if (x!==0 || y !== 0 && this.footstepsMusic.isPaused)
-        {
-            this.footstepsMusic.resume();
+
+
+        if (this.footstepsMusic !== undefined) {
+            if (x !== 0 || y !== 0 && this.footstepsMusic.isPaused)
+                this.footstepsMusic.resume();
         }
+
+
         if (x < 0) {
             animsController.play(animations[0], true);
         } else if (x > 0) {
@@ -29,7 +33,12 @@ export default class Human extends Character{
         } else if (y > 0) {
             animsController.play(animations[3], true);
         } else {
-            this.footstepsMusic.pause();
+            //todo: probably not here
+            if (this.footstepsMusic !== undefined)
+            {
+                this.footstepsMusic.pause();
+            }
+
             const currentAnimation = animsController.currentAnim;
             if (currentAnimation) {
                 const frame = currentAnimation.getLastFrame();
