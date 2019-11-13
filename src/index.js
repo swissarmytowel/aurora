@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 
-import StartingScene from '../scenes/starting-scene';
+import GroupAligmentScene from '../scenes/group-aligment-scene';
 
 //https://github.com/mikewesthad/phaser-3-tilemap-blog-posts/blob/master/examples/post-1/05-physics/index.js
 
@@ -10,7 +10,7 @@ const config = {
   height: 600,
   pixelArt: true,
   zoom: 1.2,
-  scene: StartingScene,
+  scene: GroupAligmentScene,
   physics: {
     default: "arcade",
     arcade: {

@@ -4,6 +4,7 @@ import Player from "./player";
 import cyberpunkConfigJson from "../../assets/animations/cyberpunk.json";
 import slimeConfigJson from "../../assets/animations/slime.json";
 import AnimationLoader from "../utils/animation-loader";
+import Npc from './npc';
 
 export default class CharacterFactory {
 
@@ -52,7 +53,7 @@ export default class CharacterFactory {
         character.maxSpeed = 100;
         character.setCollideWorldBounds(true);
         character.cursors = this.scene.input.keyboard.createCursorKeys();
-        character.animationSets = this.animationLibrary.get('aurora');
+        character.animationSets = this.animationLibrary.get(spriteSheetName);
         //todo: not here
       character.footstepsMusic = this.scene.sound.add('footsteps', {
           mute: false,
@@ -70,7 +71,11 @@ export default class CharacterFactory {
     }
 
     buildCyberpunkCharacter(spriteSheetName, x, y, params) {
-        return this.scene.physics.add.sprite(x, y, spriteSheetName, 2);
+        const character = new Npc(this.scene, x, y, spriteSheetName,2);
+        character.setCollideWorldBounds(true);
+        character.animationSets = this.animationLibrary.get(spriteSheetName);
+
+        return character;
 
         //todo: add
     }
