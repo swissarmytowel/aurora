@@ -4,6 +4,7 @@ import Player from "./player";
 import cyberpunkConfigJson from "../../assets/animations/cyberpunk.json";
 import slimeConfigJson from "../../assets/animations/slime.json";
 import AnimationLoader from "../utils/animation-loader";
+import Human from './human';
 
 
 export default class CharacterFactory {
@@ -16,9 +17,9 @@ export default class CharacterFactory {
         this.cyberSpritesheets =  ['aurora', 'blue', 'yellow', 'green', 'punk'];
         this.slimeSpriteSheet = 'slime';
 
-        const slimeStateTable = new StateTable(this);
-        slimeStateTable.addState(new StateTableRow('searching', this.foundTarget, 'jumping'));
-        slimeStateTable.addState(new StateTableRow('jumping', this.lostTarget, 'searching'));
+        // const slimeStateTable = new StateTable(this);
+        // slimeStateTable.addState(new StateTableRow('searching', this.foundTarget, 'jumping'));
+        // slimeStateTable.addState(new StateTableRow('jumping', this.lostTarget, 'searching'));
 
         let animationLibrary =  new Map();
         this.cyberSpritesheets.forEach(
@@ -55,7 +56,7 @@ export default class CharacterFactory {
         character.maxSpeed = 100;
         character.setCollideWorldBounds(true);
         character.cursors = this.scene.input.keyboard.createCursorKeys();
-        character.animationSets = this.animationLibrary.get('aurora');
+        character.animationSets = this.animationLibrary.get(spriteSheetName);
         //todo: not here
       character.footstepsMusic = this.scene.sound.add('footsteps', {
           mute: false,
@@ -73,17 +74,19 @@ export default class CharacterFactory {
     }
 
     buildCyberpunkCharacter(spriteSheetName, x, y, params) {
-        return this.scene.physics.add.sprite(x, y, spriteSheetName, 2);
-
-        //todo: add mixin
-    }
+        let human = new Human(this.scene, x, y, spriteSheetName, 2);
+        human.setCollideWorldBounds(true);
+        human.animationSets = this.animationLibrary.get(spriteSheetName);
+        human.speed = 40;
+        return human;
+    }   
 
     buildSlime(x, y, params) {
         const slimeType = params.slimeType || 1;
         let slime = new Slime(this.scene, x, y, this.slimeSpriteSheet, 9 * slimeType);
         slime.animations = this.animationLibrary.get(this.slimeSpriteSheet).get(this.slimeNumberToName(slimeType));
         slime.setCollideWorldBounds(true);
-        slime.speed = 40;
+        slime.speed = 20;
         return slime;
     }
     slimeNumberToName(n)
