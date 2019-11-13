@@ -1,40 +1,29 @@
-import Vector2 from 'phaser/src/math/Vector2'
-import Steering from "../ai/steerings/steering.js"
+import Character from "./character";
 
-export default class Human extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene, x, y, name, frame) {
-        super(scene, x, y, name, frame);
-        scene.physics.world.enable(this);
-        scene.add.existing(this);
-        this.steerings = [];
+
+export default class Human extends Character{
+    addBehaviour(behaviour)
+    {
+        behaviour.character = this;
+        this.behaviuors.push(behaviour);
     }
-
     update() {
-
-        // todo: human logic
-        //const state =  this.stateTable.getNextState();
-        //decisionMaker.perform(state);
-
-
-        const impulse = Steering.calculateSteeringsSum(this);
-        this.body.setVelocity(impulse.x, impulse.y); 
+        this.behaviuors.forEach(x=>x.update());
         this.updateAnimation();
-    }
-
-    setStateTable(stateTable) {
-        this.stateTable = stateTable;
-     }
-
-     setDecisionMaker(decisionMaker)
-     {
-         this.decisionMaker = decisionMaker;
-     }
-
-     updateAnimation() {
+    };
+    updateAnimation() {
         const animations = this.animationSets.get('Walk');
         const animsController = this.anims;
         const x = this.body.velocity.x;
         const y = this.body.velocity.y;
+
+
+        if (this.footstepsMusic !== undefined) {
+            if (x !== 0 || y !== 0 && this.footstepsMusic.isPaused)
+                this.footstepsMusic.resume();
+        }
+
+
         if (x < 0) {
             animsController.play(animations[0], true);
         } else if (x > 0) {
@@ -44,11 +33,36 @@ export default class Human extends Phaser.Physics.Arcade.Sprite{
         } else if (y > 0) {
             animsController.play(animations[3], true);
         } else {
+            //todo: probably not here
+            if (this.footstepsMusic !== undefined)
+            {
+                this.footstepsMusic.pause();
+            }
+
             const currentAnimation = animsController.currentAnim;
             if (currentAnimation) {
                 const frame = currentAnimation.getLastFrame();
                 this.setTexture(frame.textureKey, frame.textureFrame);
             }
+            // todo: check with steering
+            // this.alignStanding();
         }
+    }
+    alignStanding()
+    {
+        if (this.body.velocity.length() !== 0 )
+        {
+            this.viewDirection.x = this.body.velocity.x;
+            this.viewDirection.y = this.body.velocity.y;
+            this.viewDirection.normalize();
+        }
+        if (this.viewDirection.x >= this.viewDirection.y)
+        {
+            this.setFrame(this.viewDirection.x >= 0 ?  16 : 9);
+        } else
+        {
+            this.setFrame(this.viewDirection.y > 0 ?  1 : 26);
+        }
+
     }
 }

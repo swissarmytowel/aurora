@@ -8,6 +8,7 @@ import CharacterFactory from "../src/characters/character_factory";
 import Footsteps from "../assets/audio/footstep_ice_crunchy_run_01.wav";
 
 import Wander from "../src/ai/steerings/wander"
+import SteeringDriven from "../src/ai/behaviour/steering_driven";
 
 let SteeringWanderScene = new Phaser.Class({
 
@@ -71,7 +72,7 @@ let SteeringWanderScene = new Phaser.Class({
         {
             let str = i%2 == 0? "punk" : "blue";
             this.wanderer = this.characterFactory.buildCharacter(str, 100, 100, {player: false});
-            this.wanderer.steerings = [ new Wander(this.wanderer) ];
+            this.wanderer.addBehaviour(new SteeringDriven([ new Wander(this.wanderer) ])) ;
             this.gameObjects.push(this.wanderer);
             this.physics.add.collider(this.wanderer, worldLayer);
         }
