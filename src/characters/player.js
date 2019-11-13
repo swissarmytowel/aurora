@@ -1,10 +1,6 @@
-export default class Player extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene, x, y, name, frame) {
-        super(scene, x, y, name, frame);
-        scene.physics.world.enable(this);
-        scene.add.existing(this);
-    }
+import Character from "./character";
 
+export default class Player extends Character{
     update() {
         const body = this.body;
         this.body.setVelocity(0);
