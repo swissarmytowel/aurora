@@ -6,6 +6,7 @@ import slimeConfigJson from "../../assets/animations/slime.json";
 import AnimationLoader from "../utils/animation-loader";
 import UserControlled from '../ai/behaviour/user_controlled'
 import SteeringDriven from '../ai/behaviour/steering_driven'
+
 export default class CharacterFactory {
 
     constructor(scene) {
@@ -53,6 +54,7 @@ export default class CharacterFactory {
         let character = new Human(this.scene, x, y, spriteSheetName, 2);
         character.animationSets = this.animationLibrary.get(spriteSheetName);
         character.addBehaviour(new UserControlled(100, this.scene.input.keyboard.createCursorKeys()));
+
         //todo: not here
         character.footstepsMusic = this.scene.sound.add('footsteps', {
           mute: false,
