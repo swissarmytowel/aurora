@@ -6,9 +6,10 @@ export default class Character extends Phaser.Physics.Arcade.Sprite{
     }
 
     update() {
+      throw "Unimplemented update() method for Character class" ;
       this.updateAnimation();
     };
     updateAnimation() {
-
+        throw "Unimplemented updateAnimation() method for Character class" ;
     };
 }

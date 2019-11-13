@@ -5,10 +5,7 @@ import cyberpunkConfigJson from "../../assets/animations/cyberpunk.json";
 import slimeConfigJson from "../../assets/animations/slime.json";
 import AnimationLoader from "../utils/animation-loader";
 
-
 export default class CharacterFactory {
-
-
 
     constructor(scene) {
         this.scene = scene;
@@ -75,7 +72,7 @@ export default class CharacterFactory {
     buildCyberpunkCharacter(spriteSheetName, x, y, params) {
         return this.scene.physics.add.sprite(x, y, spriteSheetName, 2);
 
-        //todo: add mixin
+        //todo: add
     }
 
     buildSlime(x, y, params) {
