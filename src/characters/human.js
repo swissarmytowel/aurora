@@ -1,27 +1,15 @@
 import Character from "./character";
 
-export default class Player extends Character{
+
+export default class Human extends Character{
+    addBehaviour(behaviour)
+    {
+        behaviour.character = this;
+        this.behaviuors.push(behaviour);
+    }
     update() {
-        const body = this.body;
-        this.body.setVelocity(0);
-        const speed = this.maxSpeed;
-        const cursors = this.cursors;
-
-        if (cursors.left.isDown) {
-            body.velocity.x -= speed;
-        } else if (cursors.right.isDown) {
-            body.velocity.x += speed;
-        }
-
-        // Vertical movement
-        if (cursors.up.isDown) {
-            body.setVelocityY(-speed);
-        } else if (cursors.down.isDown) {
-            body.setVelocityY(speed);
-        }
-        // Normalize and scale the velocity so that player can't move faster along a diagonal
-        body.velocity.normalize().scale(speed);
-        this.updateAnimation();
+            this.behaviuors.forEach(x=>x.update());
+            this.updateAnimation();
     };
     updateAnimation() {
         const animations = this.animationSets.get('Walk');
@@ -47,6 +35,25 @@ export default class Player extends Character{
                 const frame = currentAnimation.getLastFrame();
                 this.setTexture(frame.textureKey, frame.textureFrame);
             }
+            // todo: check with steering
+            // this.alignStanding();
         }
+    }
+    alignStanding()
+    {
+        if (this.body.velocity.length() !== 0 )
+        {
+            this.viewDirection.x = this.body.velocity.x;
+            this.viewDirection.y = this.body.velocity.y;
+            this.viewDirection.normalize();
+        }
+        if (this.viewDirection.x >= this.viewDirection.y)
+        {
+            this.setFrame(this.viewDirection.x >= 0 ?  16 : 9);
+        } else
+        {
+            this.setFrame(this.viewDirection.y > 0 ?  1 : 26);
+        }
+
     }
 }

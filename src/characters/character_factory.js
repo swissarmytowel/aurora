@@ -1,9 +1,10 @@
 import {StateTableRow, StateTable} from '../ai/behaviour/state';
 import Slime from "./slime";
-import Player from "./player";
+import Human from "./human";
 import cyberpunkConfigJson from "../../assets/animations/cyberpunk.json";
 import slimeConfigJson from "../../assets/animations/slime.json";
 import AnimationLoader from "../utils/animation-loader";
+import UserControlled from '../ai/behaviour/user_controlled'
 
 export default class CharacterFactory {
 
@@ -48,11 +49,10 @@ export default class CharacterFactory {
     }
 
     buildPlayerCharacter(spriteSheetName, x, y) {
-        let character = new Player(this.scene, x, y, spriteSheetName, 2);
-        character.maxSpeed = 100;
-        character.setCollideWorldBounds(true);
-        character.cursors = this.scene.input.keyboard.createCursorKeys();
+        let character = new Human(this.scene, x, y, spriteSheetName, 2);
+
         character.animationSets = this.animationLibrary.get('aurora');
+        character.addBehaviour(new UserControlled(100, this.scene.input.keyboard.createCursorKeys()));
         //todo: not here
       character.footstepsMusic = this.scene.sound.add('footsteps', {
           mute: false,
