@@ -3,6 +3,8 @@ import Phaser from 'phaser'
 
 import StartingScene from '../scenes/starting-scene';
 import SteeringWanderScene from '../scenes/steering-wander-scene';
+import SteeringEvadeScene from '../scenes/steering-evade-scene';
+import SteeringEvadeVsPursuitScene from '../scenes/steering-evade-vs-pursuit';
 import MenuScene from  '../scenes/scenes-menu'
 import GroupAlignmentScene from '../scenes/group-alignment-scene';
 
@@ -15,7 +17,7 @@ const config = {
   pixelArt: true,
   zoom: 1.2,
 
-  scene: [MenuScene, SteeringWanderScene, GroupAlignmentScene, StartingScene],
+  scene: [MenuScene, SteeringWanderScene, GroupAlignmentScene, StartingScene, SteeringEvadeScene, SteeringEvadeVsPursuitScene],
   //StartingScene,
 
 
