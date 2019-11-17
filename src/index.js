@@ -7,6 +7,8 @@ import SteeringEvadeScene from '../scenes/steering-evade-scene';
 import SteeringEvadeVsPursuitScene from '../scenes/steering-evade-vs-pursuit';
 import MenuScene from  '../scenes/scenes-menu'
 import GroupAlignmentScene from '../scenes/group-alignment-scene';
+import SteeringSeekScene from '../scenes/steering-seek-scene';
+import SteeringFleeScene from '../scenes/steering-flee-scene';
 
 //https://github.com/mikewesthad/phaser-3-tilemap-blog-posts/blob/master/examples/post-1/05-physics/index.js
 
@@ -17,7 +19,10 @@ const config = {
   pixelArt: true,
   zoom: 1.2,
 
-  scene: [MenuScene, SteeringWanderScene, GroupAlignmentScene, StartingScene, SteeringEvadeScene, SteeringEvadeVsPursuitScene],
+
+  scene: [MenuScene, SteeringWanderScene, GroupAlignmentScene, StartingScene, SteeringEvadeScene, SteeringEvadeVsPursuitScene, SteeringSeekScene, SteeringFleeScene],
+
+
   //StartingScene,
 
 
