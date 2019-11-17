@@ -1,0 +1,11 @@
+{
+  "MagicSpell":
+  {
+    "Default":{
+      "type": "number",
+      "minimum": 1,
+      "maximum": 74,
+      "exclusiveMaximum": false
+    }
+  }
+}
