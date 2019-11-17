@@ -87,9 +87,9 @@ let ProceduralScene = new Phaser.Class({
         const tileset = map.addTilesetImage("tiles", null, 48, 48, 1, 2);
         this.groundLayer = map.createBlankDynamicLayer("Ground", tileset).fill(TILES.BLANK);
         this.stuffLayer = map.createBlankDynamicLayer("Stuff", tileset);
-      //  const shadowLayer = map.createBlankDynamicLayer("Shadow", tileset).fill(TILES.BLANK);
+        const shadowLayer = map.createBlankDynamicLayer("Shadow", tileset).fill(TILES.BLANK);
 
-     //   this.tilemapVisibility = new TilemapVisibility(shadowLayer);
+        this.tilemapVisibility = new TilemapVisibility(shadowLayer);
 
         // Use the array of rooms generated to place tiles in the map
         // Note: using an arrow function here so that "this" still refers to our scene
@@ -211,14 +211,14 @@ let ProceduralScene = new Phaser.Class({
 
         // Find the player's room using another helper method from the dungeon that converts from
         // dungeon XY (in grid units) to the corresponding room object
-     /*   const playerTileX = this.groundLayer.worldToTileX(this.player.positionX);
-        const playerTileY = this.groundLayer.worldToTileY(this.player.positionY);
+        const playerTileX = this.groundLayer.worldToTileX(this.player.x);
+        const playerTileY = this.groundLayer.worldToTileY(this.player.y);
         if (!isNaN(playerTileX))
         {
             const playerRoom = this.dungeon.getRoomAt(playerTileX, playerTileY);
             this.tilemapVisibility.setActiveRoom(playerRoom);
         }
-*/
+
 
         this.input.keyboard.once("keydown_D", event => {
             // Turn on physics debugging to show player's hitbox
