@@ -9,6 +9,7 @@ import MenuScene from  '../scenes/scenes-menu'
 import GroupAlignmentScene from '../scenes/group-alignment-scene';
 import SteeringSeekScene from '../scenes/steering-seek-scene';
 import SteeringFleeScene from '../scenes/steering-flee-scene';
+import ProceduralScene from '../scenes/procudural-scene';
 
 //https://github.com/mikewesthad/phaser-3-tilemap-blog-posts/blob/master/examples/post-1/05-physics/index.js
 
@@ -20,7 +21,11 @@ const config = {
   zoom: 1.2,
 
 
-  scene: [MenuScene, SteeringWanderScene, GroupAlignmentScene, StartingScene, SteeringEvadeScene, SteeringEvadeVsPursuitScene, SteeringSeekScene, SteeringFleeScene],
+  scene: [MenuScene, SteeringWanderScene,
+    GroupAlignmentScene, StartingScene,
+    SteeringEvadeScene, SteeringEvadeVsPursuitScene,
+    SteeringSeekScene, SteeringFleeScene,
+    ProceduralScene],
 
 
   //StartingScene,

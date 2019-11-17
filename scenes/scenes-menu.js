@@ -14,7 +14,11 @@ let MenuScene = new Phaser.Class({
     },
     create: function () {
 
-        const scenes = ['StartingScene', 'GroupAlignmentScene', 'SteeringWanderScene', 'SteeringEvadeScene', 'SteeringEvadeVsPursuitScene', 'SteeringSeekScene', 'SteeringFleeScene'];
+        const scenes = ['StartingScene', 'GroupAlignmentScene',
+            'SteeringWanderScene', 'SteeringEvadeScene',
+            'SteeringEvadeVsPursuitScene',
+            'SteeringSeekScene', 'SteeringFleeScene',
+            'ProceduralScene'];
 
         let k = 0;
         scenes.forEach(x => this.add.text(this.physics.world.centerX, 200 + (k++ * 30), x, {fill: '#0f0'})
