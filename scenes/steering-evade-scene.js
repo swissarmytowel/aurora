@@ -3,21 +3,22 @@ import EasyStar from "easystarjs";
 import tilemapPng from '../assets/tileset/Dungeon_Tileset.png'
 import dungeonRoomJson from '../assets/dungeon_room.json'
 import punkSpriteSheet from '../assets/sprites/characters/punk.png'
-import blueSpriteSheet from '../assets/sprites/characters/blue.png'
+import greenSpriteSheet from '../assets/sprites/characters/green.png'
 import CharacterFactory from "../src/characters/character_factory";
 import Footsteps from "../assets/audio/footstep_ice_crunchy_run_01.wav";
 
-import Wander from "../src/ai/steerings/wander"
+import Evade from "../src/ai/steerings/evade"
+
 import SteeringDriven from "../src/ai/behaviour/steering_driven";
 
-let SteeringWanderScene = new Phaser.Class({
+let SteeringEvadeScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
 
     initialize:
 
         function StartingScene() {
-            Phaser.Scene.call(this, {key: 'SteeringWanderScene'});
+            Phaser.Scene.call(this, {key: 'SteeringEvadeScene'});
         },
     characterFrameConfig: {frameWidth: 31, frameHeight: 31},
 
@@ -29,7 +30,7 @@ let SteeringWanderScene = new Phaser.Class({
 
         //loading spitesheets
         this.load.spritesheet('punk', punkSpriteSheet, this.characterFrameConfig);
-        this.load.spritesheet('blue', blueSpriteSheet, this.characterFrameConfig);
+        this.load.spritesheet('green', greenSpriteSheet, this.characterFrameConfig);
         this.load.audio('footsteps', Footsteps);
     },
     create: function () {
@@ -68,18 +69,16 @@ let SteeringWanderScene = new Phaser.Class({
         this.characterFactory = new CharacterFactory(this);
 
         // Creating characters
-        for(let i = 0; i < 10; i++)
-        {
-            let str = i%2 == 0? "punk" : "blue";
-            this.wanderer = this.characterFactory.buildCharacter(str, 100, 100, {player: false});
-            this.wanderer.addBehaviour(new SteeringDriven([ new Wander(this.wanderer) ])) ;
-            this.gameObjects.push(this.wanderer);
-            this.physics.add.collider(this.wanderer, worldLayer);
-        }
-        this.wanderer = this.characterFactory.buildCharacter('punk', 100, 100, {player: true});
-        this.wanderer.addBehaviour(new SteeringDriven([ new Wander(this.wanderer) ])) ;
-        this.gameObjects.push(this.wanderer);
-        this.physics.add.collider(this.wanderer, worldLayer);
+
+        this.evader = this.characterFactory.buildCharacter('green', 300, 150, {player: false});
+        this.gameObjects.push(this.evader);
+        this.physics.add.collider(this.evader, worldLayer);
+
+        this.punk = this.characterFactory.buildCharacter('punk', 100, 120, {player: false});
+        this.punk.setVelocityX(50);
+        this.gameObjects.push(this.punk);
+
+        this.evader.addBehaviour(new SteeringDriven([ new Evade(this.evader, this.punk) ])) ;
 
         this.input.keyboard.once("keydown_D", event => {
             // Turn on physics debugging to show player's hitbox
@@ -106,4 +105,4 @@ let SteeringWanderScene = new Phaser.Class({
     }
 });
 
-export default SteeringWanderScene
+export default SteeringEvadeScene
