@@ -9,7 +9,7 @@ import MenuScene from  '../scenes/scenes-menu'
 import GroupAlignmentScene from '../scenes/group-alignment-scene';
 import SteeringSeekScene from '../scenes/steering-seek-scene';
 import SteeringFleeScene from '../scenes/steering-flee-scene';
-import ProceduralScene from '../scenes/procudural-scene';
+import ProceduralScene from '../scenes/procedural-scene';
 
 //https://github.com/mikewesthad/phaser-3-tilemap-blog-posts/blob/master/examples/post-1/05-physics/index.js
 

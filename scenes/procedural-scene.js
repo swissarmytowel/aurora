@@ -9,10 +9,11 @@ import greenSpriteSheet from '../assets/sprites/characters/green.png'
 import slimeSpriteSheet from '../assets/sprites/characters/slime.png'
 import CharacterFactory from "../src/characters/character_factory";
 import Footsteps from "../assets/audio/footstep_ice_crunchy_run_01.wav";
-import RoomGenerator from "../src/utils/room-generator";
 import Dungeon from "@mikewesthad/dungeon";
 import TILES from  '../src/utils/tile-mapping'
 import TilemapVisibility from "../src/utils/tilemap-visibility";
+import SteeringDriven from "../src/ai/behaviour/steering_driven";
+import Wander from "../src/ai/steerings/wander";
 let ProceduralScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -36,31 +37,12 @@ let ProceduralScene = new Phaser.Class({
         this.load.spritesheet('slime', slimeSpriteSheet, this.slimeFrameConfig);
         this.load.audio('footsteps', Footsteps);
 
-        this.dungeon = new Dungeon({
-            width: 40,
-            height: 40,
-            rooms: {
-                width: {
-                    min: 5,
-                    max: 10
-                },
-                height: {
-                    min: 8,
-                    max: 20
-                },
-                maxArea: 150,
-                maxRooms: 10
-            }
-        });
-
-
-       // this.dungeon.drawToConsole();
-
     },
     create: function () {
         this.level++;
         this.hasPlayerReachedStairs = false;
-
+        this.characterFactory = new CharacterFactory(this);
+        this.gameObjects = [];
         // Generate a random world with a few extra options:
         //  - Rooms should only have odd number dimensions so that they have a center tile.
         //  - Doors should be at least 2 tiles away from corners, so that we can place a corner tile on
@@ -75,7 +57,7 @@ let ProceduralScene = new Phaser.Class({
             }
         });
 
-       // this.dungeon.drawToConsole();
+        this.dungeon.drawToConsole();
 
         // Creating a blank tilemap with dimensions matching the dungeon
         const map = this.make.tilemap({
@@ -137,12 +119,17 @@ let ProceduralScene = new Phaser.Class({
         const endRoom = Phaser.Utils.Array.RemoveRandomElement(rooms);
         const otherRooms = Phaser.Utils.Array.Shuffle(rooms).slice(0, rooms.length * 0.9);
 
+        // Not exactly correct for the tileset since there are more possible floor tiles, but this will
+        // do for the example.
+        this.groundLayer.setCollisionByExclusion([-1, 6, 7, 8, 26]);
+        this.stuffLayer.setCollisionByExclusion([-1, 6, 7, 8, 26]);
+
         // Place the stairs
         this.stuffLayer.putTileAt(TILES.STAIRS, endRoom.centerX, endRoom.centerY);
 
         // Place stuff in the 90% "otherRooms"
         otherRooms.forEach(room => {
-            var rand = Math.random();
+            let rand = Math.random();
             if (rand <= 0.25) {
                 // 25% chance of chest
                 this.stuffLayer.putTileAt(TILES.CHEST, room.centerX, room.centerY);
@@ -151,6 +138,7 @@ let ProceduralScene = new Phaser.Class({
                 const x = Phaser.Math.Between(room.left + 2, room.right - 2);
                 const y = Phaser.Math.Between(room.top + 2, room.bottom - 2);
                 this.stuffLayer.weightedRandomize(x, y, 1, 1, TILES.POT);
+                this.addNPCtoRoom(room);
             } else {
                 // 25% of either 2 or 4 towers, depending on the room size
                 if (room.height >= 9) {
@@ -161,32 +149,37 @@ let ProceduralScene = new Phaser.Class({
                 } else {
                     this.stuffLayer.putTilesAt(TILES.TOWER, room.centerX - 1, room.centerY - 1);
                     this.stuffLayer.putTilesAt(TILES.TOWER, room.centerX + 1, room.centerY - 1);
+
                 }
+                this.addNPCtoRoom(room);
             }
         });
 
-        // Not exactly correct for the tileset since there are more possible floor tiles, but this will
-        // do for the example.
-        this.groundLayer.setCollisionByExclusion([-1, 6, 7, 8, 26]);
-        this.stuffLayer.setCollisionByExclusion([-1, 6, 7, 8, 26]);
 
-        this.stuffLayer.setTileIndexCallback(TILES.STAIRS, () => {
-            this.stuffLayer.setTileIndexCallback(TILES.STAIRS, null);
-            this.hasPlayerReachedStairs = true;
-            this.player.freeze();
-            const cam = this.cameras.main;
-            cam.fade(250, 0, 0, 0);
-            cam.once("camerafadeoutcomplete", () => {
-                this.player.destroy();
-                this.scene.restart();
-            });
+
+        this.stuffLayer.setTileIndexCallback(TILES.STAIRS, (object) => {
+            if (this.player === object)
+            {
+                this.stuffLayer.setTileIndexCallback(TILES.STAIRS, null);
+                this.hasPlayerReachedStairs = true;
+                this.player.body.moves = false;
+                const cam = this.cameras.main;
+                cam.fade(250, 0, 0, 0);
+                cam.once("camerafadeoutcomplete", () => {
+                    this.player.destroy();
+                    this.scene.restart();
+                });
+            }
+
         });
 
         // Place the player in the first room
         const playerRoom = startRoom;
         const x = map.tileToWorldX(playerRoom.centerX);
+        console.log(playerRoom.centerX);
+        console.log(x);
         const y = map.tileToWorldY(playerRoom.centerY);
-        this.characterFactory = new CharacterFactory(this);
+
         this.player = this.characterFactory.buildCharacter('aurora', x, y, {player: true});
         // Watch the player and tilemap layers for collisions, for the duration of the scene:
         this.physics.add.collider(this.player, this.groundLayer);
@@ -198,6 +191,29 @@ let ProceduralScene = new Phaser.Class({
         // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
         camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         camera.startFollow(this.player);
+
+        this.input.keyboard.once("keydown_D", event => {
+            // Turn on physics debugging to show player's hitbox
+            this.physics.world.createDebugGraphic();
+
+            const graphics = this.add
+                .graphics()
+                .setAlpha(0.75)
+                .setDepth(20);
+        });
+
+
+    },
+    addNPCtoRoom: function (room)
+    {
+        const x = Phaser.Math.Between(room.left + 4, room.right - 5);
+        const y = Phaser.Math.Between(room.top + 4, room.bottom - 5);
+        let wanderer = this.characterFactory.buildCharacter(room.id%2 === 0 ? "punk" : "blue",
+            x, y, {player: false});
+        wanderer.addBehaviour(new SteeringDriven([ new Wander(wanderer) ])) ;
+        this.gameObjects.push(wanderer);
+        this.physics.add.collider(wanderer, this.groundLayer);
+        this.physics.add.collider(wanderer, this.stuffLayer);
     },
     update: function () {
         if (this.gameObjects) {
@@ -220,15 +236,6 @@ let ProceduralScene = new Phaser.Class({
         }
 
 
-        this.input.keyboard.once("keydown_D", event => {
-            // Turn on physics debugging to show player's hitbox
-            this.physics.world.createDebugGraphic();
-
-            const graphics = this.add
-                .graphics()
-                .setAlpha(0.75)
-                .setDepth(20);
-        });
 
     },
     tilesToPixels(tileX, tileY) {
