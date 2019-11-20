@@ -83,19 +83,19 @@ let GroupAlignmentScene = new Phaser.Class({
         this.characters.blue = this.characterFactory.buildCharacter('blue', 70, 150, { player: false });
         this.characters.green = this.characterFactory.buildCharacter('green', 100, 150, { player: false });
         this.characters.yellow = this.characterFactory.buildCharacter('yellow', 130, 150, { player: false  });
-        
+
         for (let i = 0; i < 15; i++) {
             this.characters['c' + i] = this.characterFactory.buildCharacter('blue', 160 + 30 * i, 150, { player: false });
         }
 
 
         const characters = Object.values(this.characters);
-        
+
         characters.forEach(c => {
             this.gameObjects.push(c);
             this.physics.add.collider(c, worldLayer);
             this.physics.add.collider(c, this.player);
-            
+
             const neighbor = characters.filter(o => o !== c);
             neighbor.push(this.player);
             c.addBehaviour(new SteeringDriven([new GroupAlignment(c, neighbor)]))

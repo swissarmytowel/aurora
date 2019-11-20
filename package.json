@@ -13,6 +13,7 @@
     "parcel": "^1.12.4"
   },
   "dependencies": {
+    "@mikewesthad/dungeon": "^1.2.2",
     "characters": "0.0.2",
     "easystarjs": "^0.4.3",
     "phaser": "^3.20.1"
