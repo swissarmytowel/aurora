@@ -1,8 +1,6 @@
 import Steering from "./steering.js";
 import Vector2 from 'phaser/src/math/Vector2'
 
-const EPSILON = 10e-3;
-
 export default class Evade extends Steering {
 
     constructor(owner, pursuer, force = 1, ownerMaxSpeed=100, panicDistSquare = 10e3) {
