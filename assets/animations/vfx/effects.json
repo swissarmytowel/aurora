@@ -1,11 +1,18 @@
 {
-  "MagicSpell":
+  "magicSpell": {
+    "min_frame": 0,
+    "max_frame": 74,
+    "framerate": 20
+  },
+  "vortex": {
+    "min_frame": 0,
+    "max_frame": 60,
+    "framerate": 20
+  },
+  "flamelash":
   {
-    "Default":{
-      "type": "number",
-      "minimum": 1,
-      "maximum": 74,
-      "exclusiveMaximum": false
-    }
+    "min_frame": 0,
+    "max_frame": 51,
+    "framerate": 30
   }
 }

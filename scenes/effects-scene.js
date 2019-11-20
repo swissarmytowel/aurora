@@ -3,6 +3,7 @@ import EasyStar from "easystarjs";
 import tilemapPng from '../assets/tileset/Dungeon_Tileset.png'
 import dungeonRoomJson from '../assets/dungeon_room.json'
 import CharacterFactory from "../src/characters/character_factory";
+import EffectsFactory from "../src/utils/effects_factory";
 let EffectsScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -16,11 +17,12 @@ let EffectsScene = new Phaser.Class({
         this.load.image("tiles", tilemapPng);
         this.load.tilemapTiledJSON("map", dungeonRoomJson);
         this.characterFactory = new CharacterFactory(this);
+        this.effectsFactory = new EffectsFactory(this);
 
     },
     create: function () {
         this.characterFactory.loadAnimations();
-
+        this.effectsFactory.loadAnimations();
         this.gameObjects = [];
         const map = this.make.tilemap({key: "map"});
 
@@ -33,20 +35,7 @@ let EffectsScene = new Phaser.Class({
         const belowLayer = map.createStaticLayer("Floor", tileset, 0, 0);
         const worldLayer = map.createStaticLayer("Walls", tileset, 0, 0);
         const aboveLayer = map.createStaticLayer("Upper", tileset, 0, 0);
-        this.tileSize = 32;
-        this.finder = new EasyStar.js();
-        let grid = [];
-        for(let y = 0; y < worldLayer.tilemap.height; y++){
-            let col = [];
-            for(let x = 0; x < worldLayer.tilemap.width; x++) {
-                const tile = worldLayer.tilemap.getTileAt(x, y);
-                col.push(tile ? tile.index : 0);
-            }
-            grid.push(col);
-        }
 
-        this.finder.setGrid(grid);
-        this.finder.setAcceptableTiles([0]);
 
         worldLayer.setCollisionBetween(1, 500);
         aboveLayer.setDepth(10);
@@ -58,6 +47,9 @@ let EffectsScene = new Phaser.Class({
         this.gameObjects.push(this.player);
         this.physics.add.collider(this.player, worldLayer);
 
+        this.effectsFactory.buildEffect('magicSpell', 100, 200);
+        this.effectsFactory.buildEffect('vortex', 100, 350);
+        this.effectsFactory.buildEffect('flamelash', 400, 350);
         this.input.keyboard.once("keydown_D", event => {
             // Turn on physics debugging to show player's hitbox
             this.physics.world.createDebugGraphic();

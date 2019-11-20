@@ -9,6 +9,7 @@ import GroupAlignmentScene from '../scenes/group-alignment-scene';
 import SteeringSeekScene from '../scenes/steering-seek-scene';
 import SteeringFleeScene from '../scenes/steering-flee-scene';
 import ProceduralScene from '../scenes/procedural-scene';
+import EffectsScene from "./effects-scene";
 
 const scenes = [
     [ 'StartingScene', StartingScene ],
