@@ -1,15 +1,27 @@
 import tilemapPng from '../assets/tileset/Dungeon_Tileset.png'
 import menuBackgroundJson from '../assets/menu_background.json'
 
+import StartingScene from '../scenes/starting-scene';
+import SteeringWanderScene from '../scenes/steering-wander-scene';
+import SteeringEvadeScene from '../scenes/steering-evade-scene';
+import SteeringEvadeVsPursuitScene from '../scenes/steering-evade-vs-pursuit';
+import GroupAlignmentScene from '../scenes/group-alignment-scene';
+import SteeringSeekScene from '../scenes/steering-seek-scene';
+import SteeringFleeScene from '../scenes/steering-flee-scene';
+import ProceduralScene from '../scenes/procedural-scene';
+
 const scenes = [
-    'StartingScene', 
-    'GroupAlignmentScene', 
-    'SteeringWanderScene', 
-    'SteeringEvadeScene', 
-    'SteeringEvadeVsPursuitScene', 
-    'SteeringSeekScene', 
-    'SteeringFleeScene',
-    'ProceduralScene'];
+    [ 'StartingScene', StartingScene ],
+    [ 'GroupAlignmentScene', GroupAlignmentScene ],
+    [ 'SteeringWanderScene', SteeringWanderScene ],
+    [ 'SteeringEvadeScene', SteeringEvadeScene ],
+    [ 'SteeringEvadeVsPursuitScene', SteeringEvadeVsPursuitScene ],
+    [ 'SteeringSeekScene', SteeringSeekScene ],
+    [ 'SteeringFleeScene', SteeringFleeScene ],
+    [ 'ProceduralScene', ProceduralScene ]
+];
+
+
 
 let MenuScene = new Phaser.Class({
 
@@ -22,6 +34,11 @@ let MenuScene = new Phaser.Class({
     },
 
     preload: function () {
+        scenes.forEach(s => {
+            this.scene.add(s[0], s[1], false);
+        });
+
+
         //loading map tiles and json with positions
         this.load.image('tiles', tilemapPng);
         this.load.tilemapTiledJSON('menu_map', menuBackgroundJson);
@@ -37,13 +54,13 @@ let MenuScene = new Phaser.Class({
             .setShadow(2,2,'#000', true);
 
         let k = 0;
-        this.scenesButtons = scenes.map(text => {
-            return this.add.text(32 * 7, 32 * 3 + (k++ * 32), text, {fill: '#AAA'})
+        this.scenesButtons = scenes.map(s => {
+            return this.add.text(32 * 7, 32 * 3 + (k++ * 32), s[0], {fill: '#AAA'})
                 .setInteractive()
                 .setFixedSize(32 * 10, 32)
                 .setPadding({ top: 8 })
                 .setShadow(1,1,'#000')
-                .on('pointerdown', () => this.actionOnClick(text));
+                .on('pointerdown', () => this.actionOnClick(s[0]));
         });
 
         this.input.keyboard.on("keydown_ESC", event => {
@@ -77,7 +94,7 @@ let MenuScene = new Phaser.Class({
 
             try {
                 this.scene.add('HintScene_' + hint.index, hint, true);
-            } catch (error) { /* Cannot add a Scene with duplicate key */ }
+            } catch (error) { /* Error: Cannot add a Scene with duplicate key */ }
         }
     },
 });
