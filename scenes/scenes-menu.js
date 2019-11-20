@@ -9,7 +9,8 @@ const scenes = [
     'SteeringEvadeVsPursuitScene', 
     'SteeringSeekScene', 
     'SteeringFleeScene',
-    'ProceduralScene'];
+    'ProceduralScene',
+    'EffectsScene'];
 
 let MenuScene = new Phaser.Class({
 
@@ -28,6 +29,7 @@ let MenuScene = new Phaser.Class({
     },
 
     create: function () {
+
         const map = this.make.tilemap({key: 'menu_map'});
         const tileset = map.addTilesetImage('Dungeon_Tileset', 'tiles');
         map.createStaticLayer('Main', tileset, 0, 0);

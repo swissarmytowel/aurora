@@ -2,9 +2,7 @@ import EasyStar from "easystarjs";
 
 import tilemapPng from '../assets/tileset/Dungeon_Tileset.png'
 import dungeonRoomJson from '../assets/dungeon_room.json'
-
-
-
+import CharacterFactory from "../src/characters/character_factory";
 let EffectsScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -17,17 +15,11 @@ let EffectsScene = new Phaser.Class({
         //loading map tiles and json with positions
         this.load.image("tiles", tilemapPng);
         this.load.tilemapTiledJSON("map", dungeonRoomJson);
+        this.characterFactory = new CharacterFactory(this);
 
-        //loading spitesheets
-        this.load.spritesheet('aurora', auroraSpriteSheet, this.characterFrameConfig);
-        this.load.spritesheet('blue', blueSpriteSheet, this.characterFrameConfig);
-        this.load.spritesheet('green', greenSpriteSheet, this.characterFrameConfig);
-        this.load.spritesheet('yellow', yellowSpriteSheet, this.characterFrameConfig);
-        this.load.spritesheet('punk', punkSpriteSheet, this.characterFrameConfig);
-        this.load.spritesheet('slime', slimeSpriteSheet, this.slimeFrameConfig);
-        this.load.audio('footsteps', Footsteps);
     },
     create: function () {
+        this.characterFactory.loadAnimations();
 
         this.gameObjects = [];
         const map = this.make.tilemap({key: "map"});
@@ -61,53 +53,10 @@ let EffectsScene = new Phaser.Class({
 
         this.physics.world.bounds.width = map.widthInPixels;
         this.physics.world.bounds.height = map.heightInPixels;
-        this.characterFactory = new CharacterFactory(this);
-
-        // Creating characters
-        this.characters = { }
 
         this.player = this.characterFactory.buildCharacter('aurora', 100, 100, {player: true});
         this.gameObjects.push(this.player);
         this.physics.add.collider(this.player, worldLayer);
-
-        this.characters.blue = this.characterFactory.buildCharacter('blue', 70, 150, { player: false });
-        this.characters.green = this.characterFactory.buildCharacter('green', 100, 150, { player: false });
-        this.characters.yellow = this.characterFactory.buildCharacter('yellow', 130, 150, { player: false  });
-
-        for (let i = 0; i < 15; i++) {
-            this.characters['c' + i] = this.characterFactory.buildCharacter('blue', 160 + 30 * i, 150, { player: false });
-        }
-
-
-        const characters = Object.values(this.characters);
-
-        characters.forEach(c => {
-            this.gameObjects.push(c);
-            this.physics.add.collider(c, worldLayer);
-            this.physics.add.collider(c, this.player);
-
-            const neighbor = characters.filter(o => o !== c);
-            neighbor.push(this.player);
-            c.addBehaviour(new SteeringDriven([new GroupAlignment(c, neighbor)]))
-        });
-
-        this.physics.add.collider(Object.values(this.characters));
-
-        this.slimes =  this.physics.add.group();
-        let params = {};
-        for(let i = 0; i < 0; i++) {
-            const x = Phaser.Math.RND.between(50, this.physics.world.bounds.width - 50 );
-            const y = Phaser.Math.RND.between(50, this.physics.world.bounds.height -50 );
-            params.slimeType = Phaser.Math.RND.between(0, 4);
-            const slime = this.characterFactory.buildSlime(x, y, params);
-            this.slimes.add(slime);
-            this.physics.add.collider(slime, worldLayer);
-            this.gameObjects.push(slime);
-        }
-
-        this.physics.add.collider(this.player, this.slimes);
-        this.physics.add.collider(Object.values(this.characters), this.slimes);
-
 
         this.input.keyboard.once("keydown_D", event => {
             // Turn on physics debugging to show player's hitbox
@@ -132,4 +81,4 @@ let EffectsScene = new Phaser.Class({
     }
 });
 
-export default GroupAlignmentScene
+export default EffectsScene

@@ -1,14 +1,9 @@
 import EasyStar from "easystarjs";
 
 import tilemapPng from '../assets/tileset/buch-tileset-48px-extruded.png'
-import auroraSpriteSheet from '../assets/sprites/characters/aurora.png'
-import punkSpriteSheet from '../assets/sprites/characters/punk.png'
-import blueSpriteSheet from '../assets/sprites/characters/blue.png'
-import yellowSpriteSheet from '../assets/sprites/characters/yellow.png'
-import greenSpriteSheet from '../assets/sprites/characters/green.png'
-import slimeSpriteSheet from '../assets/sprites/characters/slime.png'
+
 import CharacterFactory from "../src/characters/character_factory";
-import Footsteps from "../assets/audio/footstep_ice_crunchy_run_01.wav";
+
 import Dungeon from "@mikewesthad/dungeon";
 import TILES from  '../src/utils/tile-mapping'
 import TilemapVisibility from "../src/utils/tilemap-visibility";
@@ -17,8 +12,7 @@ import Wander from "../src/ai/steerings/wander";
 let ProceduralScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
-    characterFrameConfig: {frameWidth: 31, frameHeight: 31},
-    slimeFrameConfig: {frameWidth: 32, frameHeight: 32},
+
 
     initialize: function ProceduralScene() {
         Phaser.Scene.call(this, {key: 'ProceduralScene'});
@@ -27,21 +21,14 @@ let ProceduralScene = new Phaser.Class({
 
         //loading map tiles and json with positions
         this.load.image("blue-tiles", tilemapPng);
-
-        //loading spitesheets
-        this.load.spritesheet('aurora', auroraSpriteSheet, this.characterFrameConfig);
-        this.load.spritesheet('blue', blueSpriteSheet, this.characterFrameConfig);
-        this.load.spritesheet('green', greenSpriteSheet, this.characterFrameConfig);
-        this.load.spritesheet('yellow', yellowSpriteSheet, this.characterFrameConfig);
-        this.load.spritesheet('punk', punkSpriteSheet, this.characterFrameConfig);
-        this.load.spritesheet('slime', slimeSpriteSheet, this.slimeFrameConfig);
-        this.load.audio('footsteps', Footsteps);
-
+        this.characterFactory = new CharacterFactory(this);
     },
     create: function () {
+        this.characterFactory.loadAnimations();
+
         this.level++;
         this.hasPlayerReachedStairs = false;
-        this.characterFactory = new CharacterFactory(this);
+
         this.gameObjects = [];
         // Generate a random world with a few extra options:
         //  - Rooms should only have odd number dimensions so that they have a center tile.

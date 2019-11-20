@@ -5,21 +5,43 @@ import cyberpunkConfigJson from "../../assets/animations/cyberpunk.json";
 import slimeConfigJson from "../../assets/animations/slime.json";
 import AnimationLoader from "../utils/animation-loader";
 import UserControlled from '../ai/behaviour/user_controlled'
-import SteeringDriven from '../ai/behaviour/steering_driven'
+import auroraSpriteSheet from '../../assets/sprites/characters/aurora.png'
+import punkSpriteSheet from '../../assets/sprites/characters/punk.png'
+import blueSpriteSheet from '../../assets/sprites/characters/blue.png'
+import yellowSpriteSheet from '../../assets/sprites/characters/yellow.png'
+import greenSpriteSheet from '../../assets/sprites/characters/green.png'
+import slimeSpriteSheet from '../../assets/sprites/characters/slime.png'
+import Footsteps from "../../assets/audio/footstep_ice_crunchy_run_01.wav";
+import SteeringDriven from "../../src/ai/behaviour/steering_driven";
+
 
 export default class CharacterFactory {
 
     constructor(scene) {
+        const characterFrameConfig = {frameWidth: 31, frameHeight: 31};
+        const slimeFrameConfig = {frameWidth: 32, frameHeight: 32};
         this.scene = scene;
 
         this.cyberSpritesheets =  ['aurora', 'blue', 'yellow', 'green', 'punk'];
         this.slimeSpriteSheet = 'slime';
+        //loading spitesheets
+        scene.load.spritesheet('aurora', auroraSpriteSheet, characterFrameConfig);
+        scene.load.spritesheet('blue', blueSpriteSheet, characterFrameConfig);
+        scene.load.spritesheet('green', greenSpriteSheet, characterFrameConfig);
+        scene.load.spritesheet('yellow', yellowSpriteSheet, characterFrameConfig);
+        scene.load.spritesheet('punk', punkSpriteSheet, characterFrameConfig);
+        scene.load.spritesheet('slime', slimeSpriteSheet, slimeFrameConfig);
+        scene.load.audio('footsteps', Footsteps);
 
         // const slimeStateTable = new StateTable(this);
         // slimeStateTable.addState(new StateTableRow('searching', this.foundTarget, 'jumping'));
         // slimeStateTable.addState(new StateTableRow('jumping', this.lostTarget, 'searching'));
+    }
 
+    loadAnimations()
+    {
         let animationLibrary =  new Map();
+        let scene = this.scene;
         this.cyberSpritesheets.forEach(
             function (element) {
                 animationLibrary.set(element, new AnimationLoader(scene,
@@ -29,10 +51,9 @@ export default class CharacterFactory {
             }
         );
         animationLibrary.set(this.slimeSpriteSheet,
-                new AnimationLoader(scene, this.slimeSpriteSheet, slimeConfigJson, this.slimeSpriteSheet).createAnimations());
+            new AnimationLoader(scene, this.slimeSpriteSheet, slimeConfigJson, this.slimeSpriteSheet).createAnimations());
         this.animationLibrary = animationLibrary;
     }
-
     buildCharacter(spriteSheetName, x, y, params = {}) {
         switch (spriteSheetName) {
             case 'aurora':

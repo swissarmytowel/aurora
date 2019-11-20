@@ -2,10 +2,7 @@ import EasyStar from "easystarjs";
 
 import tilemapPng from '../assets/tileset/Dungeon_Tileset.png'
 import dungeonRoomJson from '../assets/dungeon_room.json'
-import punkSpriteSheet from '../assets/sprites/characters/punk.png'
-import auroraSpriteSheet from '../assets/sprites/characters/aurora.png'
 import CharacterFactory from "../src/characters/character_factory";
-import Footsteps from "../assets/audio/footstep_ice_crunchy_run_01.wav";
 
 import Seek from "../src/ai/steerings/seek"
 import SteeringDriven from "../src/ai/behaviour/steering_driven";
@@ -19,7 +16,7 @@ let SteeringSeekScene = new Phaser.Class({
         function StartingScene() {
             Phaser.Scene.call(this, {key: 'SteeringSeekScene'});
         },
-    characterFrameConfig: {frameWidth: 31, frameHeight: 31},
+
 
     preload: function () {
 
@@ -27,12 +24,10 @@ let SteeringSeekScene = new Phaser.Class({
         this.load.image("tiles", tilemapPng);
         this.load.tilemapTiledJSON("map", dungeonRoomJson);
 
-        //loading spitesheets
-        this.load.spritesheet('punk', punkSpriteSheet, this.characterFrameConfig);
-        this.load.spritesheet('aurora', auroraSpriteSheet, this.characterFrameConfig);
-        this.load.audio('footsteps', Footsteps);
+        this.characterFactory = new CharacterFactory(this);
     },
     create: function () {
+        this.characterFactory.loadAnimations();
 
         this.gameObjects = [];
         const map = this.make.tilemap({key: "map"});
@@ -65,7 +60,6 @@ let SteeringSeekScene = new Phaser.Class({
 
         this.physics.world.bounds.width = map.widthInPixels;
         this.physics.world.bounds.height = map.heightInPixels;
-        this.characterFactory = new CharacterFactory(this);
 
         this.player = this.characterFactory.buildCharacter('aurora', 100, 100, {player: true});
         this.gameObjects.push(this.player);
