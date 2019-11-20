@@ -56,12 +56,16 @@ export default class Slime extends Character{
     }
     updateAnimation() {
         const animsController = this.anims;
-        if (this.wantToJump)
-        {
-            animsController.play(this.animations[1], true);
-        } else
-        {
-            animsController.play(this.animations[0], true);
+        try {
+            if (this.wantToJump)
+            {
+                animsController.play(this.animations[1], true);
+            } else
+            {
+                animsController.play(this.animations[0], true);
+            }
+        } catch (e) {
+
         }
 
     }

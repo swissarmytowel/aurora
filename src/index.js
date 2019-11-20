@@ -15,8 +15,8 @@ import ProceduralScene from '../scenes/procedural-scene';
 
 const config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: 1024,
+  height: 768,
   pixelArt: true,
   zoom: 1.2,
 
