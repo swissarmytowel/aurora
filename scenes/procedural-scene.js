@@ -26,7 +26,7 @@ let ProceduralScene = new Phaser.Class({
     preload: function () {
 
         //loading map tiles and json with positions
-        this.load.image("tiles", tilemapPng);
+        this.load.image("blue-tiles", tilemapPng);
 
         //loading spitesheets
         this.load.spritesheet('aurora', auroraSpriteSheet, this.characterFrameConfig);
@@ -66,7 +66,7 @@ let ProceduralScene = new Phaser.Class({
             width: this.dungeon.width,
             height: this.dungeon.height
         });
-        const tileset = map.addTilesetImage("tiles", null, 48, 48, 1, 2);
+        const tileset = map.addTilesetImage("blue-tiles", null, 48, 48, 1, 2);
         this.groundLayer = map.createBlankDynamicLayer("Ground", tileset).fill(TILES.BLANK);
         this.stuffLayer = map.createBlankDynamicLayer("Stuff", tileset);
         const shadowLayer = map.createBlankDynamicLayer("Shadow", tileset).fill(TILES.BLANK);
@@ -204,11 +204,11 @@ let ProceduralScene = new Phaser.Class({
 
 
     },
-    addNPCtoRoom: function (room)
+    addNPCtoRoom: function(room)
     {
         const x = Phaser.Math.Between(room.left + 4, room.right - 5);
         const y = Phaser.Math.Between(room.top + 4, room.bottom - 5);
-        let wanderer = this.characterFactory.buildCharacter(room.id%2 === 0 ? "punk" : "blue",
+        let wanderer = this.characterFactory.buildCharacter( Phaser.Math.RND.integer() % 2 === 0 ? "punk" : "blue",
             x, y, {player: false});
         wanderer.addBehaviour(new SteeringDriven([ new Wander(wanderer) ])) ;
         this.gameObjects.push(wanderer);
