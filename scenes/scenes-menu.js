@@ -9,7 +9,8 @@ const scenes = [
     'SteeringEvadeVsPursuitScene', 
     'SteeringSeekScene', 
     'SteeringFleeScene',
-    'ProceduralScene'];
+    'ProceduralScene',
+    'SteeringPathFollowingScene' ];
 
 let MenuScene = new Phaser.Class({
 

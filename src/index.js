@@ -10,6 +10,7 @@ import GroupAlignmentScene from '../scenes/group-alignment-scene';
 import SteeringSeekScene from '../scenes/steering-seek-scene';
 import SteeringFleeScene from '../scenes/steering-flee-scene';
 import ProceduralScene from '../scenes/procedural-scene';
+import SteeringPathFollowingScene from '../scenes/steering-path-following-scene';
 
 //https://github.com/mikewesthad/phaser-3-tilemap-blog-posts/blob/master/examples/post-1/05-physics/index.js
 
@@ -25,7 +26,7 @@ const config = {
     GroupAlignmentScene, StartingScene,
     SteeringEvadeScene, SteeringEvadeVsPursuitScene,
     SteeringSeekScene, SteeringFleeScene,
-    ProceduralScene],
+    ProceduralScene, SteeringPathFollowingScene],
 
 
   //StartingScene,
