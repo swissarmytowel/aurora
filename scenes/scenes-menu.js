@@ -10,6 +10,7 @@ import SteeringSeekScene from '../scenes/steering-seek-scene';
 import SteeringFleeScene from '../scenes/steering-flee-scene';
 import ProceduralScene from '../scenes/procedural-scene';
 import EffectsScene from "./effects-scene";
+import SteeringPathFollowingScene from '../scenes/steering-path-following-scene';
 
 const scenes = [
     [ 'StartingScene', StartingScene ],

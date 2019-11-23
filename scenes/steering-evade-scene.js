@@ -3,7 +3,6 @@ import EasyStar from "easystarjs";
 import tilemapPng from '../assets/tileset/Dungeon_Tileset.png'
 import dungeonRoomJson from '../assets/dungeon_room.json'
 import CharacterFactory from "../src/characters/character_factory";
-import Footsteps from "../assets/audio/footstep_ice_crunchy_run_01.wav";
 
 import Evade from "../src/ai/steerings/evade"
 
@@ -18,7 +17,7 @@ let SteeringEvadeScene = new Phaser.Class({
         function StartingScene() {
             Phaser.Scene.call(this, {key: 'SteeringEvadeScene'});
         },
-
+        
     preload: function () {
 
         //loading map tiles and json with positions
