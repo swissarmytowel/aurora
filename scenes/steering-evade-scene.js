@@ -2,8 +2,6 @@ import EasyStar from "easystarjs";
 
 import tilemapPng from '../assets/tileset/Dungeon_Tileset.png'
 import dungeonRoomJson from '../assets/dungeon_room.json'
-import punkSpriteSheet from '../assets/sprites/characters/punk.png'
-import greenSpriteSheet from '../assets/sprites/characters/green.png'
 import CharacterFactory from "../src/characters/character_factory";
 import Footsteps from "../assets/audio/footstep_ice_crunchy_run_01.wav";
 
@@ -20,20 +18,17 @@ let SteeringEvadeScene = new Phaser.Class({
         function StartingScene() {
             Phaser.Scene.call(this, {key: 'SteeringEvadeScene'});
         },
-    characterFrameConfig: {frameWidth: 31, frameHeight: 31},
 
     preload: function () {
 
         //loading map tiles and json with positions
         this.load.image("tiles", tilemapPng);
         this.load.tilemapTiledJSON("map", dungeonRoomJson);
+        this.characterFactory = new CharacterFactory(this);
 
-        //loading spitesheets
-        this.load.spritesheet('punk', punkSpriteSheet, this.characterFrameConfig);
-        this.load.spritesheet('green', greenSpriteSheet, this.characterFrameConfig);
-        this.load.audio('footsteps', Footsteps);
     },
     create: function () {
+        this.characterFactory.loadAnimations();
 
         this.gameObjects = [];
         const map = this.make.tilemap({key: "map"});
@@ -66,7 +61,7 @@ let SteeringEvadeScene = new Phaser.Class({
 
         this.physics.world.bounds.width = map.widthInPixels;
         this.physics.world.bounds.height = map.heightInPixels;
-        this.characterFactory = new CharacterFactory(this);
+
 
         // Creating characters
 
