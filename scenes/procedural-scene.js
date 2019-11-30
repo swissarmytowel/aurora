@@ -34,7 +34,7 @@ let ProceduralScene = new Phaser.Class({
 
         this.gameObjects = [];
 
-        let level = new Level(15, 7, 5, 5);
+        let level = new Level(5, 5, 25, 5);
         level.generateLevel();
         level.print();
 

@@ -43,12 +43,40 @@ export default class Level{
     }
 
 
+    //expanding rooms by using dilate-method with shuffle on every step
+    expandRooms(startCenters, ){
+        maxWidth,
+        maxHeight,
+        maxTunnelLength,
+        percentageOfFilling - of a whole area
+    }
+
     // distributes total number of points just about equally
     // between four quarters of area
-    getQuadrantsNums(totalNum){
+    getQuadrantsNums(totalNum, left, right, top, bottom, xCenter, yCenter){
         const quarter = Math.floor(totalNum / 4);
-        const quadrants = [quarter, quarter, quarter, quarter];
-        const rest = totalNum % 4;
+        const quadrantsMax = [
+            (xCenter-left+1) * (yCenter-top+1), 
+            (right-xCenter) * (yCenter-top+1),
+            (xCenter-left+1) * (bottom-yCenter), 
+            (right-xCenter) * (bottom-yCenter)
+        ];
+
+        if(totalNum > (right-left+1) * (bottom-top+1))
+            return quadrantsMax;
+
+        const quadrants = [];
+        quadrantsMax.forEach(q => quadrants.push(q > quarter ? quarter : q));
+        let rest = totalNum;
+        quadrants.forEach(q => rest -= q);
+
+        while(rest > 0){
+            for(let i = 0; i < 4; i++)
+                if(quadrants[i] < quadrantsMax[i]){
+                    quadrants[i]++;
+                    rest--;
+                }
+        }
         let startQuadrant = Phaser.Math.RND.integerInRange(0, 4);
         for(let i = startQuadrant; i < startQuadrant+rest; i++){
             quadrants[i%4]++;
@@ -71,9 +99,9 @@ export default class Level{
             points.push(new Vector2(x, y));
             this.levelMatrix[y][x] = points.length;
         } else {
-            const quadrants = this.getQuadrantsNums(number);
-            const xCenter = Math.floor((right - left) / 2);
-            const yCenter = Math.floor((down - top) / 2);
+            const xCenter = Math.floor((right + left) / 2);
+            const yCenter = Math.floor((down + top) / 2);
+            const quadrants = this.getQuadrantsNums(number, left, right, top, down, xCenter, yCenter);
             this.quadTreeDropPoints(points, quadrants[0], left, xCenter, top, yCenter);
             this.quadTreeDropPoints(points, quadrants[1], xCenter+1, right, top, yCenter);
             this.quadTreeDropPoints(points, quadrants[2], left, xCenter, yCenter+1, down);
