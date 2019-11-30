@@ -11,6 +11,7 @@ import SteeringFleeScene from '../scenes/steering-flee-scene';
 import ProceduralScene from '../scenes/procedural-scene';
 import EffectsScene from "./effects-scene";
 import SteeringPathFollowingScene from '../scenes/steering-path-following-scene';
+import TrapsTilesScene from '../scenes/traps-tiles-scene';
 
 const scenes = [
     [ 'StartingScene', StartingScene ],
@@ -22,7 +23,8 @@ const scenes = [
     [ 'SteeringFleeScene', SteeringFleeScene ],
     [ 'ProceduralScene', ProceduralScene ],
     [ 'EffectsScene', EffectsScene],
-    ['SteeringPathFollowingScene', SteeringPathFollowingScene]
+    ['SteeringPathFollowingScene', SteeringPathFollowingScene],
+    ['TrapsTilesScene', TrapsTilesScene]
 ];
 
 

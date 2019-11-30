@@ -9,6 +9,9 @@ import TILES from  '../src/utils/tile-mapping'
 import TilemapVisibility from "../src/utils/tilemap-visibility";
 import SteeringDriven from "../src/ai/behaviour/steering_driven";
 import Wander from "../src/ai/steerings/wander";
+
+import Level from "../src/utils/level-generator.js"
+
 let ProceduralScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -30,6 +33,11 @@ let ProceduralScene = new Phaser.Class({
         this.hasPlayerReachedStairs = false;
 
         this.gameObjects = [];
+
+        let level = new Level(15, 7, 5, 5);
+        level.generateLevel();
+        level.print();
+
         // Generate a random world with a few extra options:
         //  - Rooms should only have odd number dimensions so that they have a center tile.
         //  - Doors should be at least 2 tiles away from corners, so that we can place a corner tile on

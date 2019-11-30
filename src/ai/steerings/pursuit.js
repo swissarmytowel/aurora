@@ -33,7 +33,7 @@ export default class Pursuit extends Steering {
         const lookAheadTime = toTarget.length / (this.ownerSpeed + this.targetSpeed)
         
         return Pursuit.seek(this.owner, 
-            targetPos.add(target.velocity.clone().scale(lookAheadTime)), 
+            targetPos.add(target.body.velocity.clone().scale(lookAheadTime)), 
             this.ownerSpeed);
     }
 }
