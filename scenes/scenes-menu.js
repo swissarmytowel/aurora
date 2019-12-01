@@ -12,9 +12,11 @@ import ProceduralScene from '../scenes/procedural-scene';
 import EffectsScene from "./effects-scene";
 import SteeringPathFollowingScene from '../scenes/steering-path-following-scene';
 import TrapsTilesScene from '../scenes/traps-tiles-scene';
+import EndlessAdventureScene from '../scenes/endless-adventure-scene';
 
 const scenes = [
     [ 'StartingScene', StartingScene ],
+    ['EndlessAdventureScene', EndlessAdventureScene],
     [ 'GroupAlignmentScene', GroupAlignmentScene ],
     [ 'SteeringWanderScene', SteeringWanderScene ],
     [ 'SteeringEvadeScene', SteeringEvadeScene ],
@@ -81,6 +83,8 @@ let MenuScene = new Phaser.Class({
     },
 
     update: function () {
+        this._runningScene = 'EndlessAdventureScene';
+        this.scene.run('EndlessAdventureScene');
         if (this._runningScene == null) {
             this.scenesButtons.forEach(e => {
                 const [x, y] = [this.input.x, this.input.y]
