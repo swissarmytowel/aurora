@@ -44,11 +44,11 @@ export default class Level{
 
 
     //expanding rooms by using dilate-method with shuffle on every step
-    expandRooms(startCenters, ){
-        maxWidth,
-        maxHeight,
-        maxTunnelLength,
-        percentageOfFilling - of a whole area
+    expandRooms(startCenters){
+        // maxWidth,
+        // maxHeight,
+        // maxTunnelLength,
+        // percentageOfFilling - of a whole area
     }
 
     // distributes total number of points just about equally
