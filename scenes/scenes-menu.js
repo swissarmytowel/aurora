@@ -34,13 +34,14 @@ let MenuScene = new Phaser.Class({
 
     initialize: function MenuScene() {
         Phaser.Scene.call(this, {key: 'MenuScene'});
+        this._needScrolling = true;
+        this._scroll = 0;
     },
 
     preload: function () {
         scenes.forEach(s => {
             this.scene.add(s[0], s[1], false);
         });
-
 
         //loading map tiles and json with positions
         this.load.image('tiles', tilemapPng);
@@ -59,13 +60,20 @@ let MenuScene = new Phaser.Class({
 
         let k = 0;
         this.scenesButtons = scenes.map(s => {
-            return this.add.text(32 * 7, 32 * 3 + (k++ * 32), s[0], {fill: '#AAA'})
+            return this.add.text(0, k++ * 32, s[0], {fill: '#AAA'})
                 .setInteractive()
                 .setFixedSize(32 * 10, 32)
                 .setPadding({ top: 8 })
                 .setShadow(1,1,'#000')
                 .on('pointerdown', () => this.actionOnClick(s[0]));
         });
+
+
+        const mask = this.add.graphics(0, 0);
+        mask.fillRect(32*7, 32*3, 32*10, 32*12);
+
+        this.add.container(32*7, 32*3,this.scenesButtons)
+            .setMask(new Phaser.Display.Masks.GeometryMask(this, mask));
 
         this.input.keyboard.on("keydown_ESC", event => {
             if (this._runningScene !== null) {
@@ -74,13 +82,21 @@ let MenuScene = new Phaser.Class({
                 this._runningScene = null;
             }
         });
+
+        this.input.on('wheel', (pointer, currentlyOver, dx, dy, dz, event) => {
+            if (this._scroll <= 0 && dy < 0
+                || this._scroll >= (this.scenesButtons.length - 12) * 32 && dy > 0) return;
+
+                this.scenesButtons.forEach(e => e.y -= dy/4)
+                this._scroll += dy/4;
+        });
     },
 
     update: function () {
         if (this._runningScene == null) {
             this.scenesButtons.forEach(e => {
                 const [x, y] = [this.input.x, this.input.y]
-                if (e.input.hitArea.contains(x-e.x,y-e.y)) {
+                if (e.input.hitArea.contains(x-e.x - 32*7,y-e.y - 32*3)) {
                     e.setFill('#FFF')
                 } else {
                     e.setFill('#AAA')
