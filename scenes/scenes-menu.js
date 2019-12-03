@@ -27,14 +27,12 @@ const scenes = [
 
 
 let MenuScene = new Phaser.Class({
-
     Extends: Phaser.Scene,
     scenesButtons: [],
     _runningScene: null, 
 
     initialize: function MenuScene() {
         Phaser.Scene.call(this, {key: 'MenuScene'});
-        this._needScrolling = true;
         this._scroll = 0;
     },
 
@@ -49,7 +47,6 @@ let MenuScene = new Phaser.Class({
     },
 
     create: function () {
-
         const map = this.make.tilemap({key: 'menu_map'});
         const tileset = map.addTilesetImage('Dungeon_Tileset', 'tiles');
         map.createStaticLayer('Main', tileset, 0, 0);
@@ -58,6 +55,7 @@ let MenuScene = new Phaser.Class({
         this.add.text(32 * 7 - 4, 32 * 2 + 4, 'SCENES', {fill: '#FFF', fontSize : 28})
             .setShadow(2,2,'#000', true);
 
+        // creating list of buttons
         let k = 0;
         this.scenesButtons = scenes.map(s => {
             return this.add.text(0, k++ * 32, s[0], {fill: '#AAA'})
@@ -68,13 +66,6 @@ let MenuScene = new Phaser.Class({
                 .on('pointerdown', () => this.actionOnClick(s[0]));
         });
 
-
-        const mask = this.add.graphics(0, 0);
-        mask.fillRect(32*7, 32*3, 32*10, 32*12);
-
-        this.add.container(32*7, 32*3,this.scenesButtons)
-            .setMask(new Phaser.Display.Masks.GeometryMask(this, mask));
-
         this.input.keyboard.on("keydown_ESC", event => {
             if (this._runningScene !== null) {
                 this.scene.pause(this._runningScene);
@@ -83,16 +74,23 @@ let MenuScene = new Phaser.Class({
             }
         });
 
+        
+        // Scrolling container
+        const mask = this.add.graphics(0, 0).fillRect(32*7, 32*3, 32*10, 32*12);
+        this.add.container(32*7, 32*3,this.scenesButtons)
+            .setMask(new Phaser.Display.Masks.GeometryMask(this, mask));
+
         this.input.on('wheel', (pointer, currentlyOver, dx, dy, dz, event) => {
             if (this._scroll <= 0 && dy < 0
                 || this._scroll >= (this.scenesButtons.length - 12) * 32 && dy > 0) return;
 
-                this.scenesButtons.forEach(e => e.y -= dy/4)
-                this._scroll += dy/4;
+                this.scenesButtons.forEach(e => e.y -= Math.floor(dy/5))
+                this._scroll += Math.floor(dy/5);
         });
     },
 
     update: function () {
+        // checking the pointer on the list of scenes
         if (this._runningScene == null) {
             this.scenesButtons.forEach(e => {
                 const [x, y] = [this.input.x, this.input.y]
@@ -124,11 +122,10 @@ class Hint extends Phaser.Scene {
         super();
         this.pos = {x, y}
         this.text = text;
-        this.ttl = time;
+        this.ttl = time; // in milliseconds
 
         this._drawingText;
-        this._drawingText;
-        this._index = Math.floor(Math.random() * 10000000);
+        this._index = Phaser.Math.RND.integer();
     }
 
     get index() {
