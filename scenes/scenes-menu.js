@@ -83,8 +83,8 @@ let MenuScene = new Phaser.Class({
     },
 
     update: function () {
-        this._runningScene = 'EndlessAdventureScene';
-        this.scene.run('EndlessAdventureScene');
+        //this._runningScene = 'EndlessAdventureScene';
+        //this.scene.run('EndlessAdventureScene');
         if (this._runningScene == null) {
             this.scenesButtons.forEach(e => {
                 const [x, y] = [this.input.x, this.input.y]

@@ -1,37 +1,30 @@
-import CharacterFactory from "../src/characters/character_factory";
-
-import Level from "../src/utils/level-generator.js"
-
+import buildLevel from "../src/utils/endless-adventure-layer-builder";
 
 let EndlessAdventureScene = new Phaser.Class({
+
     Extends: Phaser.Scene,
+
 
     initialize: function ProceduralScene() {
         Phaser.Scene.call(this, {key: 'EndlessAdventureScene'});
     },
 
     preload: function () {
-
-        this.characterFactory = new CharacterFactory(this);
+        scene.characterFactory = new CharacterFactory(this);
+        this.load.image("islands-tiles", tilemapPng);
     },
-
+    
     create: function () {
         this.characterFactory.loadAnimations();
 
+        this.level++;
+        this.hasPlayerReachedStairs = false;
+
         this.gameObjects = [];
-
-
-        //метод генерации уровня получает пустой список дескрипторов и его изменяет
-        //но возвращает - динамический слой с уже полным уровнем
-        
-        let level = new Level(10, 10, 5, 0.3);
-        level.generateLevel();
-        level.print();
-
-        this.player = this.characterFactory.buildCharacter('aurora', x, y, {player: true});
-        const camera = this.cameras.main;
-        camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        camera.startFollow(this.player);
+        let width = 100; let height = 100; let maxRooms = 100;
+        const layers = buildLevel(width, height, maxRooms, this);
+        this.groundLayer = layers["Ground"];
+        this.stuffLayer = layers["Stuff"];
 
         this.input.keyboard.once("keydown_D", event => {
             // Turn on physics debugging to show player's hitbox
@@ -42,6 +35,8 @@ let EndlessAdventureScene = new Phaser.Class({
                 .setAlpha(0.75)
                 .setDepth(20);
         });
+
+
     },
 
     update: function () {
@@ -50,9 +45,26 @@ let EndlessAdventureScene = new Phaser.Class({
                 element.update();
             });
         }
+        if (this.hasPlayerReachedStairs) return;
 
-        this.player.update();  
+        this.player.update();
+
+        // Find the player's room using another helper method from the dungeon that converts from
+        // dungeon XY (in grid units) to the corresponding room object
+        const playerTileX = this.groundLayer.worldToTileX(this.player.x);
+        const playerTileY = this.groundLayer.worldToTileY(this.player.y);
+        // if (!isNaN(playerTileX))
+        // {
+        //     const playerRoom = this.dungeon.getRoomAt(playerTileX, playerTileY);
+        //     this.tilemapVisibility.setActiveRoom(playerRoom);
+        // }
+
+
+
+    },
+    tilesToPixels(tileX, tileY) {
+        return [tileX*this.tileSize, tileY*this.tileSize];
     }
-
 });
+
 export default EndlessAdventureScene
