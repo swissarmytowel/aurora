@@ -28,9 +28,9 @@ const scenes = [
     [ 'ProceduralScene', ProceduralScene ],
     [ 'EffectsScene', EffectsScene],
     [ 'SteeringInterposeScene', SteeringInterposeScene],
-    [ 'GroupSeparationScene', GroupSeparationScene]
-    ['SteeringPathFollowingScene', SteeringPathFollowingScene],
-    ['TrapsTilesScene', TrapsTilesScene]
+    [ 'GroupSeparationScene', GroupSeparationScene],
+    [ 'SteeringPathFollowingScene', SteeringPathFollowingScene],
+    [ 'TrapsTilesScene', TrapsTilesScene]
 ];
 
 
