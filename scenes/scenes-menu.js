@@ -10,6 +10,8 @@ import SteeringSeekScene from '../scenes/steering-seek-scene';
 import SteeringFleeScene from '../scenes/steering-flee-scene';
 import ProceduralScene from '../scenes/procedural-scene';
 import EffectsScene from "./effects-scene";
+import SteeringInterposeScene from '../scenes/steering-interpose-scene';
+import GroupSeparationScene from '../scenes/group-separation-scene';
 import SteeringPathFollowingScene from '../scenes/steering-path-following-scene';
 import TrapsTilesScene from '../scenes/traps-tiles-scene';
 import EndlessAdventureScene from '../scenes/endless-adventure-scene';
@@ -25,6 +27,8 @@ const scenes = [
     [ 'SteeringFleeScene', SteeringFleeScene ],
     [ 'ProceduralScene', ProceduralScene ],
     [ 'EffectsScene', EffectsScene],
+    [ 'SteeringInterposeScene', SteeringInterposeScene],
+    [ 'GroupSeparationScene', GroupSeparationScene]
     ['SteeringPathFollowingScene', SteeringPathFollowingScene],
     ['TrapsTilesScene', TrapsTilesScene]
 ];
