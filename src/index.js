@@ -5,10 +5,10 @@ import MenuScene from  '../scenes/scenes-menu'
 
 const config = {
   type: Phaser.AUTO,
-  width: 1024,
+  width: 1366,
   height: 768,
   pixelArt: true,
-  zoom: 1.2,
+  zoom: 1,
 
   scene: MenuScene,
   physics: {
