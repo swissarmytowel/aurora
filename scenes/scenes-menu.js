@@ -10,6 +10,8 @@ import SteeringSeekScene from '../scenes/steering-seek-scene';
 import SteeringFleeScene from '../scenes/steering-flee-scene';
 import ProceduralScene from '../scenes/procedural-scene';
 import EffectsScene from "./effects-scene";
+import SteeringInterposeScene from '../scenes/steering-interpose-scene';
+import GroupSeparationScene from '../scenes/group-separation-scene';
 
 const scenes = [
     [ 'StartingScene', StartingScene ],
@@ -20,7 +22,9 @@ const scenes = [
     [ 'SteeringSeekScene', SteeringSeekScene ],
     [ 'SteeringFleeScene', SteeringFleeScene ],
     [ 'ProceduralScene', ProceduralScene ],
-    [ 'EffectsScene', EffectsScene]
+    [ 'EffectsScene', EffectsScene],
+    [ 'SteeringInterposeScene', SteeringInterposeScene],
+    [ 'GroupSeparationScene', GroupSeparationScene]
 ];
 
 

@@ -3,24 +3,16 @@ import EasyStar from "easystarjs";
 import tilemapPng from '../assets/tileset/Dungeon_Tileset.png'
 import dungeonRoomJson from '../assets/dungeon_room.json'
 import CharacterFactory from "../src/characters/character_factory";
-
-
-import Evade from "../src/ai/steerings/evade"
-
-import Pursuit from "../src/ai/steerings/pursuit"
-
+import GroupSeparation from "../src/ai/steerings/group_separation";
 import SteeringDriven from "../src/ai/behaviour/steering_driven";
 
-let SteeringEvadeVsPursuitScene = new Phaser.Class({
+let GroupSeparationScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
 
-    initialize:
-
-        function StartingScene() {
-            Phaser.Scene.call(this, {key: 'SteeringEvadeVsPursuitScene'});
-        },
-
+    initialize: function GroupSeparationScene() {
+        Phaser.Scene.call(this, {key: 'GroupSeparationScene'});
+    },
     preload: function () {
 
         //loading map tiles and json with positions
@@ -37,6 +29,7 @@ let SteeringEvadeVsPursuitScene = new Phaser.Class({
         // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
         // Phaser's cache (i.e. the name you used in preload)
         const tileset = map.addTilesetImage("Dungeon_Tileset", "tiles");
+
 
         // Parameters: layer name (or index) from Tiled, tileset, x, y
         const belowLayer = map.createStaticLayer("Floor", tileset, 0, 0);
@@ -64,17 +57,29 @@ let SteeringEvadeVsPursuitScene = new Phaser.Class({
         this.physics.world.bounds.height = map.heightInPixels;
 
         // Creating characters
+        this.characters = { }
 
-        this.evader = this.characterFactory.buildCharacter('green', 300, 150, {player: false});
-        this.gameObjects.push(this.evader);
-        this.physics.add.collider(this.evader, worldLayer);
+        this.player = this.characterFactory.buildCharacter('aurora', 300, 250, {player: true});
+        this.gameObjects.push(this.player);
+        this.physics.add.collider(this.player, worldLayer);
 
-        this.punk = this.characterFactory.buildCharacter('punk', 100, 120, {player: false});
-        this.punk.addBehaviour(new SteeringDriven([ new Pursuit(this.punk, this.evader, 1, 60, 100) ])) ;
-        this.punk.setVelocityX(50);
-        this.gameObjects.push(this.punk);
+        for (let i = 0; i < 5; i++) {
+            this.characters['c' + i] = this.characterFactory.buildCharacter('punk', 350+Math.trunc(i/3)*100 + Math.random()*100-25, 150 + i*25 - Math.random()*50, { player: false });
+            this.characters['c' + (i+5)] = this.characterFactory.buildCharacter('punk', 350-Math.trunc(i/3)*100 - Math.random()*100+25, 250 + i*25 + Math.random()*50 , { player: false });
+        }
 
-        this.evader.addBehaviour(new SteeringDriven([ new Evade(this.evader, this.punk) ])) ;
+        const characters = Object.values(this.characters);
+
+        characters.forEach(c => {
+            this.gameObjects.push(c);
+            this.physics.add.collider(c, worldLayer);
+            this.physics.add.collider(c, this.player);
+            const neighbor = characters.filter(o => o !== c);
+            neighbor.push(this.player);
+            c.addBehaviour(new SteeringDriven([new GroupSeparation(c, neighbor, 1, 125)]))
+        });
+
+        this.physics.add.collider(Object.values(this.characters));
 
         this.input.keyboard.once("keydown_D", event => {
             // Turn on physics debugging to show player's hitbox
@@ -87,18 +92,16 @@ let SteeringEvadeVsPursuitScene = new Phaser.Class({
         });
     },
     update: function () {
-        if (this.gameObjects)
-        {
+        if (this.gameObjects) {
             this.gameObjects.forEach( function(element) {
                 element.update();
             });
         }
 
     },
-    tilesToPixels(tileX, tileY)
-    {
+    tilesToPixels(tileX, tileY) {
         return [tileX*this.tileSize, tileY*this.tileSize];
     }
 });
 
-export default SteeringEvadeVsPursuitScene
+export default GroupSeparationScene
