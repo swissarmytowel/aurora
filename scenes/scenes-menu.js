@@ -18,7 +18,6 @@ import EndlessAdventureScene from '../scenes/endless-adventure-scene';
 
 const scenes = [
     [ 'StartingScene', StartingScene ],
-    [ 'EndlessAdventureScene', EndlessAdventureScene],
     [ 'GroupAlignmentScene', GroupAlignmentScene ],
     [ 'SteeringWanderScene', SteeringWanderScene ],
     [ 'SteeringEvadeScene', SteeringEvadeScene ],
