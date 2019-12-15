@@ -64,16 +64,30 @@ let SteeringOffsetPursuitScene = new Phaser.Class({
         //this.leader.addBehaviour(new SteeringDriven([ new Wander(this.leader) ])) ;
         this.gameObjects.push(this.leader);
         this.physics.add.collider(this.leader, worldLayer);
-        const offset = new Vector2(10, 10);
+        const offset = new Vector2(50, 30);
 
         // Creating characters
-        for(let i = 0; i < 1; i++) {
-            this.punk = this.characterFactory.buildCharacter("punk", 200, 100, {player: false});
-            this.punk.addBehaviour(new SteeringDriven([new OffsetPursuit(this.punk, this.leader, 1, offset)]));
+        let neighbors = [];
+        let punks = [];
+        let x = 200;
+        let y = 100;
+        for(let i = 0; i < 3; i++) {
+            this.punk = this.characterFactory.buildCharacter("punk", x, y, {player: false});
+            //this.punk.addBehaviour(new SteeringDriven([new OffsetPursuit(this.punk, this.leader, 1, offset)]));
             this.gameObjects.push(this.punk);
             this.physics.add.collider(this.punk, worldLayer);
             this.physics.add.collider(this.punk, this.leader);
+            neighbors.push(this.punk);
+            punks.push(this.punk);
+            x += 50;
+            y += 50;
         }
+
+
+        for(let i = 0; i < punks.length; i++) {
+            punks[i].addBehaviour(new SteeringDriven([new OffsetPursuit(this.punk, this.leader, 1, offset, neighbors)]));
+        }
+
 
         this.input.keyboard.once("keydown_D", event => {
             // Turn on physics debugging to show player's hitbox
