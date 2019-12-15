@@ -60,8 +60,8 @@ let SteeringOffsetPursuitScene = new Phaser.Class({
         this.physics.world.bounds.width = map.widthInPixels;
         this.physics.world.bounds.height = map.heightInPixels;
 
-        this.leader = this.characterFactory.buildCharacter('green', 300, 150, {player: false});
-        this.leader.addBehaviour(new SteeringDriven([ new Wander(this.leader) ])) ;
+        this.leader = this.characterFactory.buildCharacter('green', 300, 150, {player: true});
+        //this.leader.addBehaviour(new SteeringDriven([ new Wander(this.leader) ])) ;
         this.gameObjects.push(this.leader);
         this.physics.add.collider(this.leader, worldLayer);
         const offset = new Vector2(10, 10);
