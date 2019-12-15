@@ -1,12 +1,13 @@
 import EasyStar from "easystarjs";
 
-import tilemapPng from '../assets/tileset/Dungeon_Tileset.png'
-import dungeonRoomJson from '../assets/dungeon_room.json'
+import tilemapPng from '../assets/tileset/Dungeon_Tileset.png';
+import dungeonRoomJson from '../assets/dungeon_room.json';
 import CharacterFactory from "../src/characters/character_factory";
 import Vector2 from "phaser/src/math/Vector2";
 
-import OffsetPursuit from "../src/ai/steerings/offset_pursuit"
+import OffsetPursuit from "../src/ai/steerings/offset_pursuit";
 import SteeringDriven from "../src/ai/behaviour/steering_driven";
+import  Wander from "../src/ai/steerings/wander";
 
 let SteeringOffsetPursuitScene = new Phaser.Class({
 
@@ -60,12 +61,13 @@ let SteeringOffsetPursuitScene = new Phaser.Class({
         this.physics.world.bounds.height = map.heightInPixels;
 
         this.leader = this.characterFactory.buildCharacter('green', 300, 150, {player: false});
+        this.leader.addBehaviour(new SteeringDriven([ new Wander(this.leader) ])) ;
         this.gameObjects.push(this.leader);
         this.physics.add.collider(this.leader, worldLayer);
-        //const offset = ...
+        const offset = new Vector2(10, 10);
 
         // Creating characters
-        for(let i = 0; i < 4; i++) {
+        for(let i = 0; i < 1; i++) {
             this.punk = this.characterFactory.buildCharacter("punk", 200, 100, {player: false});
             this.punk.addBehaviour(new SteeringDriven([new OffsetPursuit(this.punk, this.leader, 1, offset)]));
             this.gameObjects.push(this.punk);
