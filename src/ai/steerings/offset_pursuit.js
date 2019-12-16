@@ -15,7 +15,6 @@ export default class OffsetPursuit extends Steering {
         this.maxSeparation = maxSeparation;
     }
 
-
     calculateImpulse() {
         const leader = this.objects[0];
         const owner = this.owner;
@@ -26,6 +25,7 @@ export default class OffsetPursuit extends Steering {
         const leaderPos = new Vector2(leader.x, leader.y);
         const ownerPos = new Vector2(owner.x, owner.y);
 
+        // Calculate behind point
         const tv = leaderVelocity.clone().scale(-1).normalize().multiply(this.offset);
         const behind = leaderPos.clone().add(tv);
 
@@ -40,8 +40,6 @@ export default class OffsetPursuit extends Steering {
 
         // Add separation force
         const separation = OffsetPursuit.separation(owner, this.neighbors, this.separationRadius, this.maxSeparation);
-        //console.log('separation = ', separation);
-
         return steering.add(separation);
     }
 
@@ -72,7 +70,6 @@ export default class OffsetPursuit extends Steering {
         force = force.normalize().scale(maxSeparation);
         return force;
     }
-
 
 /*
     calculateImpulse() {
@@ -105,5 +102,4 @@ export default class OffsetPursuit extends Steering {
         return newPose;
     }
  */
-
 }

@@ -83,11 +83,18 @@ let SteeringOffsetPursuitScene = new Phaser.Class({
             y += 50;
         }
 
-
+        // Add OffsetPursuit steering and neighbors
         for(let i = 0; i < punks.length; i++) {
             punks[i].addBehaviour(new SteeringDriven([new OffsetPursuit(this.punk, this.leader, 1, offset, neighbors)]));
         }
 
+        // Add punks collision
+        for(let i = 0; i < punks.length; i++) {
+            for (let j = 0; j < punks.length; j++) {
+                if (i == j) continue;
+                this.physics.add.collider(punks[i], punks[j]);
+            }
+        }
 
         this.input.keyboard.once("keydown_D", event => {
             // Turn on physics debugging to show player's hitbox
