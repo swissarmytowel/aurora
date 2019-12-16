@@ -57,6 +57,7 @@ export default class Slime extends Character{
     updateAnimation() {
         const animsController = this.anims;
         try {
+          if (this.hp >= 0) {
             if (this.wantToJump)
             {
                 animsController.play(this.animations[1], true);
@@ -64,15 +65,28 @@ export default class Slime extends Character{
             {
                 animsController.play(this.animations[0], true);
             }
+          } else {
+            animsController.play(this.animations[2], true);
+          }
         } catch (e) {
 
         }
-
     }
     hasArrived()
     {
         return this.pointOfInterest === undefined || this.pointOfInterest.distance(this.body.position) < eps;
     }
+
+    damage()
+    {
+      if (this.hp > 0) {
+        this.hp = this.hp - 23
+      } else {
+        this.nextLocation = null
+        this.body.destroy()
+      }
+    }
+
     selectNextLocation() {
         const nextTile = this.path.shift();
         if (nextTile)

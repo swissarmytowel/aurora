@@ -16,6 +16,7 @@ import SteeringPathFollowingScene from '../scenes/steering-path-following-scene'
 import TrapsTilesScene from '../scenes/traps-tiles-scene';
 import EndlessAdventureScene from '../scenes/endless-adventure-scene';
 import SteeringOffsetPursuitScene from '../scenes/steering-offset-pursuit-scene';
+import SlimeRushScene from '../scenes/slime-rush-scene';
 
 const scenes = [
     [ 'StartingScene', StartingScene ],
@@ -32,7 +33,8 @@ const scenes = [
     [ 'GroupSeparationScene', GroupSeparationScene],
     [ 'SteeringPathFollowingScene', SteeringPathFollowingScene],
     [ 'TrapsTilesScene', TrapsTilesScene],
-    [ 'SteeringOffsetPursuitScene', SteeringOffsetPursuitScene]
+    [ 'SteeringOffsetPursuitScene', SteeringOffsetPursuitScene],
+    [ 'SlimeRushScene', SlimeRushScene]
 ];
 
 
