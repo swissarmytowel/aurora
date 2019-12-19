@@ -17,10 +17,11 @@ import TrapsTilesScene from '../scenes/traps-tiles-scene';
 import EndlessAdventureScene from '../scenes/endless-adventure-scene';
 import SteeringOffsetPursuitScene from '../scenes/steering-offset-pursuit-scene';
 import SlimeRushScene from '../scenes/slime-rush-scene';
+import GroupCohesionScene from "./group-cohesion-scene";
 
 const scenes = [
     [ 'StartingScene', StartingScene ],
-    [ 'SlimeRushScene', SlimeRushScene],
+   //[ 'SlimeRushScene', SlimeRushScene],
     [ 'GroupAlignmentScene', GroupAlignmentScene ],
     [ 'SteeringWanderScene', SteeringWanderScene ],
     [ 'SteeringEvadeScene', SteeringEvadeScene ],
@@ -35,7 +36,8 @@ const scenes = [
     [ 'TrapsTilesScene', TrapsTilesScene],
     [ 'SteeringOffsetPursuitScene', SteeringOffsetPursuitScene],
     [ 'SlimeRushScene', SlimeRushScene],
-    [ 'EndlessAdventureScene', EndlessAdventureScene]
+    [ 'EndlessAdventureScene', EndlessAdventureScene],
+    [ 'GroupCohesionScene', GroupCohesionScene]
 ];
 
 
@@ -160,8 +162,8 @@ class Hint extends Phaser.Scene {
         const pos = this.pos;
         this._drawingText = this.add.text(
             pos.x, pos.y,
-            this.text, 
-            { 
+            this.text,
+            {
                 fill: '#fff',
                 backgroundColor: '#333',
                 padding: {
@@ -179,7 +181,7 @@ class Hint extends Phaser.Scene {
             ease: 'Linear',
             duration: 200,
             repeat: 0
-        });    
+        });
 
         this.tweens.add({
             targets: this._drawingText,
@@ -189,7 +191,7 @@ class Hint extends Phaser.Scene {
             delay: this.ttl - 400,
             duration: 200,
             repeat: 0
-        });    
+        });
     }
 
     update(time) {
