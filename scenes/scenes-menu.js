@@ -8,6 +8,7 @@ import SteeringEvadeVsPursuitScene from '../scenes/steering-evade-vs-pursuit';
 import GroupAlignmentScene from '../scenes/group-alignment-scene';
 import SteeringSeekScene from '../scenes/steering-seek-scene';
 import SteeringFleeScene from '../scenes/steering-flee-scene';
+import SteeringHideScene from '../scenes/steering-hide-scene';
 import ProceduralScene from '../scenes/procedural-scene';
 import EffectsScene from "../scenes/effects-scene";
 import SteeringInterposeScene from '../scenes/steering-interpose-scene';
@@ -27,6 +28,7 @@ const scenes = [
     [ 'SteeringEvadeVsPursuitScene', SteeringEvadeVsPursuitScene ],
     [ 'SteeringSeekScene', SteeringSeekScene ],
     [ 'SteeringFleeScene', SteeringFleeScene ],
+    [ 'SteeringHideScene', SteeringHideScene],
     [ 'ProceduralScene', ProceduralScene ],
     [ 'EffectsScene', EffectsScene],
     [ 'SteeringInterposeScene', SteeringInterposeScene],
