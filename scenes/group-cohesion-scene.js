@@ -4,8 +4,7 @@ import tilemapPng from '../assets/tileset/Dungeon_Tileset.png'
 import dungeonRoomJson from '../assets/dungeon_room.json'
 import CharacterFactory from "../src/characters/character_factory";
 import SteeringDriven from "../src/ai/behaviour/steering_driven";
-import CohesionSteering from "../src/ai/steerings/group_cohesion";
-import GroupSeparation from "../src/ai/steerings/group_separation";
+import GroupCohesion from "../src/ai/steerings/group_cohesion";
 
 let GroupCohesionScene = new Phaser.Class({
     Extends: Phaser.Scene,
@@ -83,7 +82,7 @@ let GroupCohesionScene = new Phaser.Class({
             this.physics.add.collider(c, characters);
             c.addBehaviour(new SteeringDriven(
                 [
-                    new CohesionSteering(c, [...characters, this.player], 1, 100, 0.1, 100, 40)]))
+                    new GroupCohesion(c, [...characters, this.player], 1, 100, 0.1, 100, 40)]))
         });
 
         this.physics.add.collider(Object.values(this.characters));
