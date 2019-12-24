@@ -4,14 +4,8 @@ import tilemapPng from '../assets/tileset/Dungeon_Tileset.png'
 import dungeonRoomJson from '../assets/dungeon_room.json'
 import CharacterFactory from "../src/characters/character_factory";
 import SteeringDriven from "../src/ai/behaviour/steering_driven";
-
-function getX(i){
-    return ((i + 1) * Math.floor(Math.random() * Phaser.Game.width)) %  Phaser.Game.width
-}
-
-function getY(i){
-    return ((i + 1) * Math.floor(Math.random() * Phaser.Game.width)) %  Phaser.Game.width;
-}
+import CohesionSteering from "../src/ai/steerings/group_cohesion";
+import GroupSeparation from "../src/ai/steerings/group_separation";
 
 let GroupCohesionScene = new Phaser.Class({
     Extends: Phaser.Scene,
@@ -63,16 +57,16 @@ let GroupCohesionScene = new Phaser.Class({
         this.physics.world.bounds.height = map.heightInPixels;
 
         // Creating characters
-        this.characters = {}
+        this.characters = {};
         const types = ['blue', 'green', 'yellow'];
 
         this.player = this.characterFactory.buildCharacter('aurora', 300, 250, {player: true});
         this.gameObjects.push(this.player);
         this.physics.add.collider(this.player, worldLayer);
 
-        for (let i = 0; i < 5; i++) {
-            const x = Phaser.Math.RND.between(50, this.physics.world.bounds.width - 50 );
-            const y = Phaser.Math.RND.between(50, this.physics.world.bounds.height -50 );
+        for (let i = 0; i < 10; i++) {
+            const x = Phaser.Math.RND.between(50, this.physics.world.bounds.width - 50);
+            const y = Phaser.Math.RND.between(50, this.physics.world.bounds.height - 50);
             this.characters['c' + i] = this.characterFactory.buildCharacter(
                 types[Math.trunc(Math.random() * types.length)],
                 x,
@@ -81,10 +75,15 @@ let GroupCohesionScene = new Phaser.Class({
         }
 
         const characters = Object.values(this.characters);
+        this.physics.add.collider(this.player, characters);
 
         characters.forEach(c => {
             this.gameObjects.push(c);
             this.physics.add.collider(c, worldLayer);
+            this.physics.add.collider(c, characters);
+            c.addBehaviour(new SteeringDriven(
+                [
+                    new CohesionSteering(c, [...characters, this.player], 1, 100, 0.1, 100, 40)]))
         });
 
         this.physics.add.collider(Object.values(this.characters));
