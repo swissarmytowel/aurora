@@ -21,8 +21,10 @@ import SlimeRushScene from '../scenes/slime-rush-scene';
 import GroupCohesionScene from "./group-cohesion-scene";
 
 import CellularAutomataScene from '../scenes/cellular-automata-scene';
+import EscortNpcScene from "./escort-npc-scene";
 
 const scenes = [
+    ['EscortNpcScene', EscortNpcScene],
     [ 'StartingScene', StartingScene ],
     [ 'EndlessAdventureScene', EndlessAdventureScene],
     [ 'GroupAlignmentScene', GroupAlignmentScene ],
@@ -40,8 +42,7 @@ const scenes = [
     [ 'TrapsTilesScene', TrapsTilesScene],
     [ 'SteeringOffsetPursuitScene', SteeringOffsetPursuitScene],
     [ 'SlimeRushScene', SlimeRushScene],
-    [ 'EndlessAdventureScene', EndlessAdventureScene],
-    [ 'GroupCohesionScene', GroupCohesionScene]
+    //[ 'GroupCohesionScene', GroupCohesionScene],
     [ 'CellularAutomataScene', CellularAutomataScene ]
 ];
 
