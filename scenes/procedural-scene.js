@@ -9,10 +9,10 @@ import TILES from  '../src/utils/tile-mapping'
 import TilemapVisibility from "../src/utils/tilemap-visibility";
 import SteeringDriven from "../src/ai/behaviour/steering_driven";
 import Wander from "../src/ai/steerings/wander";
+
 let ProceduralScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
-
 
     initialize: function ProceduralScene() {
         Phaser.Scene.call(this, {key: 'ProceduralScene'});
