@@ -18,10 +18,11 @@ import TrapsTilesScene from '../scenes/traps-tiles-scene';
 import EndlessAdventureScene from '../scenes/endless-adventure-scene';
 import SteeringOffsetPursuitScene from '../scenes/steering-offset-pursuit-scene';
 import SlimeRushScene from '../scenes/slime-rush-scene';
+import CellularAutomataScene from '../scenes/cellular-automata-scene';
 
 const scenes = [
     [ 'StartingScene', StartingScene ],
-    [ 'SlimeRushScene', SlimeRushScene],
+    [ 'EndlessAdventureScene', EndlessAdventureScene],
     [ 'GroupAlignmentScene', GroupAlignmentScene ],
     [ 'SteeringWanderScene', SteeringWanderScene ],
     [ 'SteeringEvadeScene', SteeringEvadeScene ],
@@ -37,7 +38,7 @@ const scenes = [
     [ 'TrapsTilesScene', TrapsTilesScene],
     [ 'SteeringOffsetPursuitScene', SteeringOffsetPursuitScene],
     [ 'SlimeRushScene', SlimeRushScene],
-    [ 'EndlessAdventureScene', EndlessAdventureScene]
+    [ 'CellularAutomataScene', CellularAutomataScene ]
 ];
 
 
